@@ -54,11 +54,6 @@ def fetch_latest_ai_papers(max_results=10):
                 "url": arxiv_url,
                 "tldr": abstract[:140] + "...",
                 "summary": abstract,
-                "takeaways": [
-                    "Fetched dynamically from arXiv.",
-                    "Review full abstract in details."
-                ],
-                "impact": "Preprint publication. Accelerates machine learning research open sharing."
             })
             
         print(f"✅ Successfully fetched {len(papers)} papers!")
@@ -77,4 +72,4 @@ if __name__ == "__main__":
         json.dump(latest_papers, f, indent=2, ensure_ascii=False)
         
     print(f"💾 Saved {len(latest_papers)} raw papers to '{output_file}'.")
-    print("💡 Next Step: Run this raw output through Gemini or LLM API to write high-fidelity summaries and key takeaways!")
+    print("💡 Next Step: Run this raw output through Gemini or LLM API to write high-fidelity bilingual summaries.")

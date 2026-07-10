@@ -4,48 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aether AI Research Feed ⚡</title>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Courier+New&display=swap" rel="stylesheet">
-  <!-- FontAwesome for icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
-    <!-- Brand Title -->
     <div class="brand-section">
       <div class="brand-logo">⚡</div>
       <h1 class="brand-title">Aether AI Feed</h1>
     </div>
 
-    <!-- Workspace View Tabs -->
     <div class="view-tabs">
-      <button class="view-tab-btn active" id="tab-feed">
-        <i class="fa-solid fa-newspaper"></i> <span>Weekly Digest</span>
+      <button class="view-tab-btn active" id="tab-browse">
+        <i class="fa-solid fa-fire"></i> <span>Browse</span>
       </button>
-      <button class="view-tab-btn" id="tab-linguistics">
-        <i class="fa-solid fa-chart-bar"></i> <span>Linguistic Insights</span>
+      <button class="view-tab-btn" id="tab-collection">
+        <i class="fa-solid fa-heart"></i> <span>Collection</span>
+        <span class="tab-count" id="collection-count">0</span>
       </button>
     </div>
 
-    <!-- Scroller Section -->
     <div class="sidebar-scroll">
-      <!-- Week Navigation -->
       <div>
         <h3 class="sidebar-section-title">📅 Timeline Weeks</h3>
-        <ul class="week-list" id="week-list-container">
-          <!-- Populated by JS -->
-        </ul>
+        <ul class="week-list" id="week-list-container"></ul>
       </div>
 
       <hr class="sidebar-divider">
 
-      <!-- Publisher Filters -->
       <div>
         <h3 class="sidebar-section-title">🏢 Publisher</h3>
         <div class="filter-group" id="publisher-filters">
@@ -63,7 +54,6 @@
 
       <hr class="sidebar-divider">
 
-      <!-- Research Category Filters -->
       <div>
         <h3 class="sidebar-section-title">🏷️ Categories</h3>
         <div class="filter-group" id="category-filters">
@@ -75,7 +65,6 @@
         </div>
       </div>
 
-      <!-- Weekly Stats Widget -->
       <div class="stats-widget">
         <h3 class="sidebar-section-title" style="margin-bottom: 8px;">📊 Week Stats</h3>
         <div class="stats-widget-row">
@@ -93,120 +82,63 @@
       </div>
     </div>
 
-    <!-- Sidebar footer theme toggle -->
     <div class="sidebar-footer">
       <button class="theme-toggle-btn" id="btn-theme-toggle">
         <i class="fa-solid fa-moon"></i> <span>Dark Mode</span>
       </button>
-      <span style="font-size: 10px; color: var(--text-secondary);">v1.2</span>
+      <span style="font-size: 10px; color: var(--text-secondary);">v2.0</span>
     </div>
   </aside>
 
   <!-- MAIN WORKSPACE -->
   <main class="main-content">
-    <!-- Header Search Bar -->
     <header class="header">
       <div class="search-container">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
         <input type="text" class="search-input" id="search-input" placeholder="Search papers, TL;DRs, keywords...">
       </div>
       <div class="header-actions">
-        <span class="header-tagline">✨ Tracking AI Frontiers in Dual Languages</span>
+        <span class="header-tagline">✨ Swipe to discover · Collect what matters</span>
       </div>
     </header>
 
-    <!-- VIEW 1: Weekly Digest Feed (Dual Columns EN/ZH) -->
-    <section class="feed-view" id="feed-view-container">
-      <!-- Weekly Summary Overview -->
+    <!-- VIEW 1: Dating-app style Browse -->
+    <section class="browse-view" id="browse-view-container">
       <div class="week-overview-card">
         <h2 class="overview-title" id="overview-title">This Week in AI</h2>
         <p class="overview-text" id="overview-text">Loading weekly context...</p>
       </div>
 
-      <!-- Dynamic Cards Grid -->
-      <div class="papers-grid" id="papers-grid-container">
-        <!-- Rendered dynamically via JS -->
+      <div class="swipe-stage">
+        <div class="swipe-progress" id="swipe-progress">0 / 0 remaining</div>
+
+        <div class="swipe-deck" id="swipe-deck">
+          <!-- Cards rendered by JS -->
+        </div>
+
+        <div class="swipe-actions">
+          <button class="swipe-btn swipe-btn-pass" id="btn-pass" title="Pass (←)">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <button class="swipe-btn swipe-btn-undo" id="btn-undo" title="Undo">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+          <button class="swipe-btn swipe-btn-save" id="btn-save" title="Save (→)">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+        </div>
+
+        <p class="swipe-hint">← Pass · → Collect · drag card or use buttons</p>
       </div>
     </section>
 
-    <!-- VIEW 2: Linguistic Insights Dashboard -->
-    <section class="linguistics-view hidden" id="linguistics-view-container">
+    <!-- VIEW 2: Collection / Favorites -->
+    <section class="collection-view hidden" id="collection-view-container">
       <div class="week-overview-card">
-        <h2 class="overview-title" id="ling-overview-title">Linguistic Semantic Insights</h2>
-        <p class="overview-text">Analyzing the frequency of technical jargon, emotional vectors, and orientation balances across the active week's abstracts.</p>
+        <h2 class="overview-title">❤️ Your Collection</h2>
+        <p class="overview-text">Papers you've saved. Edit notes anytime — they stay in this browser.</p>
       </div>
-
-      <div class="linguistic-dashboard">
-        <!-- Card 1: Word Frequency Cloud -->
-        <div class="linguistic-card">
-          <div class="linguistic-card-header">
-            <h3 class="linguistic-card-title">📖 Terminology Word Cloud</h3>
-          </div>
-          <p class="linguistic-card-desc">Programmatic spiral placement of the most frequent non-stopword tokens from abstracts this week. Larger size indicates higher frequency.</p>
-          <div class="canvas-wrapper">
-            <canvas id="wordcloud-canvas" height="250"></canvas>
-          </div>
-        </div>
-
-        <!-- Card 2: Sentiment Orientation Vector -->
-        <div class="linguistic-card">
-          <div class="linguistic-card-header">
-            <h3 class="linguistic-card-title">⚖️ Sentiment Balance Vector</h3>
-          </div>
-          <p class="linguistic-card-desc">Matches abstracts against lexical keywords of Opportunity/Optimism (performance, optimize, breakthrough) vs. Caution/Risk (threat, containment, failure).</p>
-          
-          <div class="sentiment-gauge-container">
-            <div class="gauge-labels">
-              <span style="color: var(--accent-orange);"><i class="fa-solid fa-shield-halved"></i> Caution / 风险警惕</span>
-              <span style="color: var(--accent-green);"><i class="fa-solid fa-seedling"></i> Optimism / 乐观前瞻</span>
-            </div>
-            <div class="gauge-slider-outer">
-              <div class="gauge-slider-inner" id="sentiment-slider" style="width: 50%;"></div>
-            </div>
-            <div class="sentiment-breakdown">
-              <span id="sentiment-cautious-pct">Caution: 50%</span>
-              <span id="sentiment-optimism-pct">Optimism: 50%</span>
-            </div>
-          </div>
-
-          <hr class="window-divider" style="margin: 12px 0;">
-          <div class="axis-explain-text" style="font-size: 12px;">
-            <strong>Linguistic Interpretation:</strong> Sentiment indices measure the tone balance of researchers. High safety/risk keyword presence indicates a focus on regulatory frameworks and failure audits, while high optimism indicates architectural breakthroughs or performance speedups.
-          </div>
-        </div>
-
-        <!-- Card 3: Linguistic Dimension Vectors (Radar Layout) -->
-        <div class="linguistic-card linguistic-card-wide">
-          <div class="linguistic-card-header">
-            <h3 class="linguistic-card-title">🕸️ Research Orientation Dimension Radar</h3>
-          </div>
-          <p class="linguistic-card-desc">Calculates semantic projection scores across 4 key dimensions: Empirical Scale, Theoretical Rigor, Safety & Control, and Agent Autonomy.</p>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
-            <div class="canvas-wrapper" style="border: none; background: none;">
-              <canvas id="radar-canvas" height="250"></canvas>
-            </div>
-            <div class="axis-explain-grid">
-              <div class="axis-explain-card">
-                <h4 class="axis-explain-title"><i class="fa-solid fa-microchip"></i> Empirical Scale</h4>
-                <p class="axis-explain-text">Focuses on parameter size scaling, GPU/TPU compilation speedups, optimization benchmarks, and engineering throughput.</p>
-              </div>
-              <div class="axis-explain-card">
-                <h4 class="axis-explain-title"><i class="fa-solid fa-graduation-cap"></i> Theoretical Rigor</h4>
-                <p class="axis-explain-text">Focuses on mathematical formulations, formal proofs, structural theorems, interpretability mappings, and mechanistic circuit models.</p>
-              </div>
-              <div class="axis-explain-card">
-                <h4 class="axis-explain-title"><i class="fa-solid fa-lock"></i> Safety & Control</h4>
-                <p class="axis-explain-text">Focuses on human alignment constraints, audit mechanisms, capability gating, sandbox testing, and toxic output prevention.</p>
-              </div>
-              <div class="axis-explain-card">
-                <h4 class="axis-explain-title"><i class="fa-solid fa-robot"></i> Agent Autonomy</h4>
-                <p class="axis-explain-text">Focuses on autonomous scientific exploration, multi-agent coordination systems, recursive self-coding speeds, and decision models.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="collection-list" id="collection-list"></div>
     </section>
   </main>
 
@@ -234,359 +166,546 @@
     </button>
   </div>
 
-  <!-- Javascript logic -->
   <script src="data.js"></script>
-  <script src="linguistics.js"></script>
   <script>
-    // State management
+    const STORAGE_KEY = "aether_paper_state_v2";
+
     const appState = {
-      activeView: "feed", // "feed" or "linguistics"
+      activeView: "browse",
       activeWeekId: "week-28",
       selectedPublishers: ["Google DeepMind", "Anthropic", "OpenAI"],
-      selectedCategories: ["Interpretability", "Safety & Alignment", "Model Architecture", "Systems & Optimization", "Applications"],
+      selectedCategories: [
+        "Interpretability",
+        "Safety & Alignment",
+        "Model Architecture",
+        "Systems & Optimization",
+        "Applications"
+      ],
       searchQuery: "",
       isLightMode: false,
-      bookmarked: new Set()
+      // paperKey -> { status: 'saved'|'passed', note: string }
+      paperMeta: {},
+      // for current deck
+      deck: [],
+      deckIndex: 0,
+      history: [] // { key, prevStatus } for undo
     };
 
-    // Toggle Workspace views (Feed vs Linguistics)
-    function setupViewTabs() {
-      const btnFeed = document.getElementById('tab-feed');
-      const btnLing = document.getElementById('tab-tab'); // wait, the button id is tab-linguistics
-      const tabLinguistics = document.getElementById('tab-linguistics');
-      
-      const viewFeed = document.getElementById('feed-view-container');
-      const viewLing = document.getElementById('linguistics-view-container');
+    function paperKey(paper) {
+      return paper.url || paper.title;
+    }
 
-      tabLinguistics.addEventListener('click', () => {
-        appState.activeView = "linguistics";
-        tabLinguistics.classList.add('active');
-        btnFeed.classList.remove('active');
-        
-        viewLing.classList.remove('hidden');
-        viewFeed.classList.add('hidden');
-        
-        renderLinguisticDashboard();
+    function loadPersisted() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (data.paperMeta) appState.paperMeta = data.paperMeta;
+        if (typeof data.isLightMode === "boolean") appState.isLightMode = data.isLightMode;
+      } catch (_) {}
+    }
+
+    function persist() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        paperMeta: appState.paperMeta,
+        isLightMode: appState.isLightMode
+      }));
+    }
+
+    function getMeta(key) {
+      if (!appState.paperMeta[key]) {
+        appState.paperMeta[key] = { status: null, note: "" };
+      }
+      return appState.paperMeta[key];
+    }
+
+    function findPaperByKey(key) {
+      for (const week of PAPER_DATA.weeks) {
+        for (const p of week.papers) {
+          if (paperKey(p) === key) return p;
+        }
+      }
+      return null;
+    }
+
+    function getSavedPapers() {
+      return Object.entries(appState.paperMeta)
+        .filter(([, m]) => m.status === "saved")
+        .map(([key, m]) => {
+          const paper = findPaperByKey(key);
+          return paper ? { paper, note: m.note || "" } : null;
+        })
+        .filter(Boolean);
+    }
+
+    function updateCollectionCount() {
+      const n = getSavedPapers().length;
+      document.getElementById("collection-count").textContent = n;
+    }
+
+    function setupViewTabs() {
+      const btnBrowse = document.getElementById("tab-browse");
+      const btnCollection = document.getElementById("tab-collection");
+      const viewBrowse = document.getElementById("browse-view-container");
+      const viewCollection = document.getElementById("collection-view-container");
+
+      btnCollection.addEventListener("click", () => {
+        appState.activeView = "collection";
+        btnCollection.classList.add("active");
+        btnBrowse.classList.remove("active");
+        viewCollection.classList.remove("hidden");
+        viewBrowse.classList.add("hidden");
+        renderCollection();
       });
 
-      btnFeed.addEventListener('click', () => {
-        appState.activeView = "feed";
-        btnFeed.classList.add('active');
-        tabLinguistics.classList.remove('active');
-        
-        viewFeed.classList.remove('hidden');
-        viewLing.classList.add('hidden');
-        
-        renderFeed();
+      btnBrowse.addEventListener("click", () => {
+        appState.activeView = "browse";
+        btnBrowse.classList.add("active");
+        btnCollection.classList.remove("active");
+        viewBrowse.classList.remove("hidden");
+        viewCollection.classList.add("hidden");
+        rebuildDeck();
+        renderSwipeCard();
       });
     }
 
-    // Render timeline weeks in sidebar
     function renderWeekList() {
       const container = document.getElementById("week-list-container");
       container.innerHTML = PAPER_DATA.weeks.map(week => {
         const isActive = week.id === appState.activeWeekId ? "active" : "";
+        const label = week.id === "week-28" ? "🔥 " : "";
         return `
           <li class="week-item ${isActive}" data-id="${week.id}">
-            <span class="week-item-title">${week.id === "week-28" ? "🔥 " : ""}${week.title.split(" (")[0]}</span>
+            <span class="week-item-title">${label}${week.title.split(" (")[0]}</span>
             <span class="week-item-badge">${week.papers.length}</span>
           </li>
         `;
-      }).join('');
+      }).join("");
 
-      // Add click handlers
-      container.querySelectorAll('.week-item').forEach(item => {
-        item.addEventListener('click', () => {
-          appState.activeWeekId = item.getAttribute('data-id');
+      container.querySelectorAll(".week-item").forEach(item => {
+        item.addEventListener("click", () => {
+          appState.activeWeekId = item.getAttribute("data-id");
           renderWeekList();
-          if (appState.activeView === "feed") {
-            renderFeed();
-          } else {
-            renderLinguisticDashboard();
+          if (appState.activeView === "browse") {
+            rebuildDeck();
+            renderSwipeCard();
           }
         });
       });
     }
 
-    // Toggle filter selections
     function setupFilters() {
-      // Publisher
-      document.querySelectorAll('#publisher-filters .checkbox-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const val = btn.getAttribute('data-value');
-          btn.classList.toggle('active');
-          
+      document.querySelectorAll("#publisher-filters .checkbox-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const val = btn.getAttribute("data-value");
+          btn.classList.toggle("active");
           if (appState.selectedPublishers.includes(val)) {
             appState.selectedPublishers = appState.selectedPublishers.filter(p => p !== val);
           } else {
             appState.selectedPublishers.push(val);
           }
-          if (appState.activeView === "feed") renderFeed();
+          if (appState.activeView === "browse") {
+            rebuildDeck();
+            renderSwipeCard();
+          }
         });
       });
 
-      // Categories
-      document.querySelectorAll('#category-filters .checkbox-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const val = btn.getAttribute('data-value');
-          btn.classList.toggle('active');
-          
+      document.querySelectorAll("#category-filters .checkbox-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const val = btn.getAttribute("data-value");
+          btn.classList.toggle("active");
           if (appState.selectedCategories.includes(val)) {
             appState.selectedCategories = appState.selectedCategories.filter(c => c !== val);
           } else {
             appState.selectedCategories.push(val);
           }
-          if (appState.activeView === "feed") renderFeed();
+          if (appState.activeView === "browse") {
+            rebuildDeck();
+            renderSwipeCard();
+          }
         });
       });
 
-      // Search query binding
-      document.getElementById('search-input').addEventListener('input', (e) => {
+      document.getElementById("search-input").addEventListener("input", e => {
         appState.searchQuery = e.target.value.toLowerCase().trim();
-        if (appState.activeView === "feed") renderFeed();
+        if (appState.activeView === "browse") {
+          rebuildDeck();
+          renderSwipeCard();
+        } else {
+          renderCollection();
+        }
       });
     }
 
-    // Render main papers feed
-    function renderFeed() {
+    function getFilteredPapers(includeDecided = false) {
       const activeWeek = PAPER_DATA.weeks.find(w => w.id === appState.activeWeekId);
-      if (!activeWeek) return;
+      if (!activeWeek) return [];
 
-      // Update Header/Overview content
-      document.getElementById("overview-title").innerText = `⚡ ${activeWeek.title} Summary`;
-      document.getElementById("overview-text").innerText = activeWeek.summary;
-
-      // Filter papers
-      const filteredPapers = activeWeek.papers.filter(paper => {
+      return activeWeek.papers.filter(paper => {
         const matchesPublisher = appState.selectedPublishers.includes(paper.publisher);
         const matchesCategory = appState.selectedCategories.includes(paper.category);
-        
-        const textBlob = `${paper.title} ${paper.title_zh} ${paper.tldr} ${paper.summary} ${paper.category} ${paper.publisher}`.toLowerCase();
+        const textBlob = `${paper.title} ${paper.title_zh || ""} ${paper.tldr || ""} ${paper.summary || ""} ${paper.category} ${paper.publisher}`.toLowerCase();
         const matchesSearch = appState.searchQuery === "" || textBlob.includes(appState.searchQuery);
+        if (!matchesPublisher || !matchesCategory || !matchesSearch) return false;
 
-        return matchesPublisher && matchesCategory && matchesSearch;
+        if (!includeDecided) {
+          const meta = getMeta(paperKey(paper));
+          if (meta.status === "saved" || meta.status === "passed") return false;
+        }
+        return true;
       });
+    }
 
-      // Render cards
-      const container = document.getElementById("papers-grid-container");
-      if (filteredPapers.length === 0) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">🔍</div>
-            <h3>No Research Papers Found</h3>
-            <p>Try adjusting your search terms or filter configurations in the sidebar.</p>
+    function rebuildDeck() {
+      const activeWeek = PAPER_DATA.weeks.find(w => w.id === appState.activeWeekId);
+      if (activeWeek) {
+        document.getElementById("overview-title").innerText = `⚡ ${activeWeek.title}`;
+        document.getElementById("overview-text").innerText = activeWeek.summary || "";
+        updateStats(activeWeek);
+      }
+      appState.deck = getFilteredPapers(false);
+      appState.deckIndex = 0;
+      appState.history = [];
+    }
+
+    function publisherClass(publisher) {
+      const p = (publisher || "").toLowerCase();
+      if (p.includes("google")) return "google";
+      if (p.includes("openai")) return "openai";
+      return "anthropic";
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function buildCardHTML(paper, opts = {}) {
+      const key = paperKey(paper);
+      const meta = getMeta(key);
+      const note = opts.note !== undefined ? opts.note : (meta.note || "");
+      const avatar = publisherClass(paper.publisher);
+      const hasSummary = !!(paper.summary && paper.summary.trim());
+      const hasSummaryZh = !!(paper.summary_zh && paper.summary_zh.trim());
+      const hasTldr = !!(paper.tldr && paper.tldr.trim());
+      const hasTldrZh = !!(paper.tldr_zh && paper.tldr_zh.trim());
+
+      return `
+        <article class="paper-card swipe-card" data-publisher="${escapeHtml(paper.publisher)}" data-key="${escapeHtml(key)}">
+          <div class="swipe-stamp stamp-no">NOPE</div>
+          <div class="swipe-stamp stamp-yes">SAVE</div>
+
+          <div class="card-top">
+            <div class="publisher-badge">
+              <div class="publisher-avatar avatar-${avatar}">${escapeHtml(paper.publisher.charAt(0))}</div>
+              <span>${escapeHtml(paper.publisher)}</span>
+            </div>
+            <div class="card-meta">
+              <span>${escapeHtml(paper.date || "")}</span>
+              <span class="category-tag">${escapeHtml(paper.category || "")}</span>
+            </div>
+          </div>
+
+          <div class="card-columns">
+            <div class="card-column en-col">
+              <div class="column-lang-tag">English</div>
+              <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="paper-title-link">${escapeHtml(paper.title)}</a>
+              ${hasTldr ? `<div class="tldr-box"><strong>TL;DR:</strong> ${escapeHtml(paper.tldr)}</div>` : ""}
+              ${hasSummary ? `<div class="summary-block"><p>${escapeHtml(paper.summary)}</p></div>` : ""}
+            </div>
+            <div class="card-column zh-col">
+              <div class="column-lang-tag">中文</div>
+              <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="paper-title-link">${escapeHtml(paper.title_zh || paper.title)}</a>
+              ${hasTldrZh ? `<div class="tldr-box"><strong>摘要:</strong> ${escapeHtml(paper.tldr_zh)}</div>` : ""}
+              ${hasSummaryZh ? `<div class="summary-block"><p>${escapeHtml(paper.summary_zh)}</p></div>` : ""}
+            </div>
+          </div>
+
+          <div class="note-block">
+            <label class="note-label"><i class="fa-solid fa-pen"></i> My notes / 备注</label>
+            <textarea class="note-input" data-key="${escapeHtml(key)}" placeholder="Write your thoughts on this paper...">${escapeHtml(note)}</textarea>
+          </div>
+
+          <div class="card-footer">
+            <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="read-btn">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Read Full Paper
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderSwipeCard() {
+      const deckEl = document.getElementById("swipe-deck");
+      const progressEl = document.getElementById("swipe-progress");
+      const remaining = Math.max(0, appState.deck.length - appState.deckIndex);
+      const totalFiltered = getFilteredPapers(true).length;
+      const decided = totalFiltered - remaining;
+      progressEl.textContent = remaining === 0
+        ? `Done · ${decided} reviewed`
+        : `${remaining} remaining · ${decided} reviewed`;
+
+      if (appState.deckIndex >= appState.deck.length) {
+        deckEl.innerHTML = `
+          <div class="empty-state swipe-empty">
+            <div class="empty-icon">✨</div>
+            <h3>You're all caught up</h3>
+            <p>No more papers in this filter. Check your Collection, or pick another week.</p>
+            <button class="read-btn" id="btn-goto-collection" style="margin-top:12px;">
+              <i class="fa-solid fa-heart"></i> Open Collection
+            </button>
           </div>
         `;
-        updateStats(activeWeek, []);
+        const go = document.getElementById("btn-goto-collection");
+        if (go) {
+          go.addEventListener("click", () => document.getElementById("tab-collection").click());
+        }
+        document.getElementById("btn-pass").disabled = true;
+        document.getElementById("btn-save").disabled = true;
         return;
       }
 
-      container.innerHTML = filteredPapers.map((paper, idx) => {
-        const isBookmarked = appState.bookmarked.has(paper.title) ? "fa-solid" : "fa-regular";
-        
-        // Render paper card layout (Dual column side by side EN/ZH)
+      document.getElementById("btn-pass").disabled = false;
+      document.getElementById("btn-save").disabled = false;
+
+      const paper = appState.deck[appState.deckIndex];
+      deckEl.innerHTML = buildCardHTML(paper);
+
+      const card = deckEl.querySelector(".swipe-card");
+      wireNoteInput(card);
+      enableDrag(card);
+    }
+
+    function wireNoteInput(root) {
+      root.querySelectorAll(".note-input").forEach(ta => {
+        ta.addEventListener("input", () => {
+          const key = ta.getAttribute("data-key");
+          getMeta(key).note = ta.value;
+          persist();
+        });
+        // Don't let swipe steal focus while typing
+        ta.addEventListener("pointerdown", e => e.stopPropagation());
+        ta.addEventListener("mousedown", e => e.stopPropagation());
+      });
+    }
+
+    function decide(action) {
+      if (appState.deckIndex >= appState.deck.length) return;
+      const paper = appState.deck[appState.deckIndex];
+      const key = paperKey(paper);
+      const meta = getMeta(key);
+      const card = document.querySelector("#swipe-deck .swipe-card");
+
+      appState.history.push({ key, prevStatus: meta.status, deckIndex: appState.deckIndex });
+      meta.status = action === "save" ? "saved" : "passed";
+      persist();
+      updateCollectionCount();
+
+      if (card) {
+        card.classList.add(action === "save" ? "fly-right" : "fly-left");
+        setTimeout(() => {
+          appState.deckIndex += 1;
+          renderSwipeCard();
+        }, 280);
+      } else {
+        appState.deckIndex += 1;
+        renderSwipeCard();
+      }
+    }
+
+    function undoLast() {
+      const last = appState.history.pop();
+      if (!last) return;
+      const meta = getMeta(last.key);
+      meta.status = last.prevStatus;
+      persist();
+      updateCollectionCount();
+      // Put paper back into deck at current position
+      const paper = findPaperByKey(last.key);
+      if (paper) {
+        appState.deck.splice(appState.deckIndex, 0, paper);
+        renderSwipeCard();
+      } else {
+        rebuildDeck();
+        renderSwipeCard();
+      }
+    }
+
+    function enableDrag(card) {
+      let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false;
+
+      const onStart = e => {
+        if (e.target.closest("a, button, textarea, input")) return;
+        dragging = true;
+        const point = e.touches ? e.touches[0] : e;
+        startX = point.clientX;
+        startY = point.clientY;
+        card.classList.add("dragging");
+      };
+
+      const onMove = e => {
+        if (!dragging) return;
+        const point = e.touches ? e.touches[0] : e;
+        dx = point.clientX - startX;
+        dy = point.clientY - startY;
+        const rot = dx * 0.05;
+        card.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+        card.classList.toggle("hint-pass", dx < -40);
+        card.classList.toggle("hint-save", dx > 40);
+      };
+
+      const onEnd = () => {
+        if (!dragging) return;
+        dragging = false;
+        card.classList.remove("dragging");
+        if (dx > 100) {
+          decide("save");
+        } else if (dx < -100) {
+          decide("pass");
+        } else {
+          card.style.transform = "";
+          card.classList.remove("hint-pass", "hint-save");
+        }
+        dx = 0;
+        dy = 0;
+      };
+
+      card.addEventListener("mousedown", onStart);
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", onEnd);
+      card.addEventListener("touchstart", onStart, { passive: true });
+      card.addEventListener("touchmove", onMove, { passive: true });
+      card.addEventListener("touchend", onEnd);
+    }
+
+    function setupSwipeControls() {
+      document.getElementById("btn-pass").addEventListener("click", () => decide("pass"));
+      document.getElementById("btn-save").addEventListener("click", () => decide("save"));
+      document.getElementById("btn-undo").addEventListener("click", () => undoLast());
+
+      document.addEventListener("keydown", e => {
+        if (appState.activeView !== "browse") return;
+        if (e.target.matches("textarea, input")) return;
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          decide("pass");
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          decide("save");
+        } else if (e.key === "z" && (e.metaKey || e.ctrlKey)) {
+          e.preventDefault();
+          undoLast();
+        }
+      });
+    }
+
+    function renderCollection() {
+      const list = document.getElementById("collection-list");
+      let saved = getSavedPapers();
+
+      if (appState.searchQuery) {
+        const q = appState.searchQuery;
+        saved = saved.filter(({ paper }) => {
+          const blob = `${paper.title} ${paper.title_zh || ""} ${paper.tldr || ""} ${paper.summary || ""}`.toLowerCase();
+          return blob.includes(q);
+        });
+      }
+
+      if (saved.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">💔</div>
+            <h3>Collection is empty</h3>
+            <p>Swipe right on papers you like — they'll show up here.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = saved.map(({ paper, note }) => {
+        const key = paperKey(paper);
+        const avatar = publisherClass(paper.publisher);
+        const hasSummary = !!(paper.summary && paper.summary.trim());
+        const hasSummaryZh = !!(paper.summary_zh && paper.summary_zh.trim());
         return `
-          <article class="paper-card" data-publisher="${paper.publisher}">
-            <!-- Top row metadata -->
+          <article class="paper-card collection-card" data-publisher="${escapeHtml(paper.publisher)}" data-key="${escapeHtml(key)}">
             <div class="card-top">
               <div class="publisher-badge">
-                <div class="publisher-avatar avatar-${paper.publisher.toLowerCase().includes('google') ? 'google' : paper.publisher.toLowerCase().includes('openai') ? 'openai' : 'anthropic'}">
-                  ${paper.publisher.charAt(0)}
-                </div>
-                <span>${paper.publisher}</span>
+                <div class="publisher-avatar avatar-${avatar}">${escapeHtml(paper.publisher.charAt(0))}</div>
+                <span>${escapeHtml(paper.publisher)}</span>
               </div>
               <div class="card-meta">
-                <span>${paper.date}</span>
-                <span class="category-tag">${paper.category}</span>
+                <span>${escapeHtml(paper.date || "")}</span>
+                <span class="category-tag">${escapeHtml(paper.category || "")}</span>
+                <button class="icon-btn btn-unsave" data-key="${escapeHtml(key)}" title="Remove from collection">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
               </div>
             </div>
-
-            <!-- Two column layout: EN left, ZH right -->
             <div class="card-columns">
-              <!-- Left Column: English -->
               <div class="card-column en-col">
-                <div class="column-lang-tag">English Source</div>
-                <a href="${paper.url}" target="_blank" class="paper-title-link">${paper.title}</a>
-                
-                <div class="tldr-box">
-                  <strong>TL;DR:</strong> ${paper.tldr}
-                </div>
-
-                <div class="tabs-container">
-                  <div class="tabs-header">
-                    <button class="tab-btn active" data-tab="summary-en-${idx}">Summary</button>
-                    <button class="tab-btn" data-tab="takeaways-en-${idx}">Takeaways</button>
-                    <button class="tab-btn" data-tab="impact-en-${idx}">Why It Matters</button>
-                  </div>
-                  <div class="tabs-content" style="margin-top: 10px;">
-                    <div class="tabs-pane active" id="summary-en-${idx}">
-                      <p>${paper.summary}</p>
-                    </div>
-                    <div class="tabs-pane" id="takeaways-en-${idx}">
-                      <ul class="bullet-list">
-                        ${paper.takeaways.map(t => `<li>${t}</li>`).join('')}
-                      </ul>
-                    </div>
-                    <div class="tabs-pane" id="impact-en-${idx}">
-                      <p>${paper.impact}</p>
-                    </div>
-                  </div>
-                </div>
+                <div class="column-lang-tag">English</div>
+                <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="paper-title-link">${escapeHtml(paper.title)}</a>
+                ${paper.tldr ? `<div class="tldr-box"><strong>TL;DR:</strong> ${escapeHtml(paper.tldr)}</div>` : ""}
+                ${hasSummary ? `<div class="summary-block"><p>${escapeHtml(paper.summary)}</p></div>` : ""}
               </div>
-
-              <!-- Right Column: Chinese Translation -->
               <div class="card-column zh-col">
-                <div class="column-lang-tag">中文对照</div>
-                <a href="${paper.url}" target="_blank" class="paper-title-link">${paper.title_zh}</a>
-                
-                <div class="tldr-box">
-                  <strong>摘要提炼:</strong> ${paper.tldr_zh}
-                </div>
-
-                <div class="tabs-container">
-                  <div class="tabs-header">
-                    <button class="tab-btn active" data-tab="summary-zh-${idx}">研究概述</button>
-                    <button class="tab-btn" data-tab="takeaways-zh-${idx}">核心要点</button>
-                    <button class="tab-btn" data-tab="impact-zh-${idx}">研究价值</button>
-                  </div>
-                  <div class="tabs-content" style="margin-top: 10px;">
-                    <div class="tabs-pane active" id="summary-zh-${idx}">
-                      <p>${paper.summary_zh}</p>
-                    </div>
-                    <div class="tabs-pane" id="takeaways-zh-${idx}">
-                      <ul class="bullet-list">
-                        ${paper.takeaways_zh.map(t => `<li>${t}</li>`).join('')}
-                      </ul>
-                    </div>
-                    <div class="tabs-pane" id="impact-zh-${idx}">
-                      <p>${paper.impact_zh}</p>
-                    </div>
-                  </div>
-                </div>
+                <div class="column-lang-tag">中文</div>
+                <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="paper-title-link">${escapeHtml(paper.title_zh || paper.title)}</a>
+                ${paper.tldr_zh ? `<div class="tldr-box"><strong>摘要:</strong> ${escapeHtml(paper.tldr_zh)}</div>` : ""}
+                ${hasSummaryZh ? `<div class="summary-block"><p>${escapeHtml(paper.summary_zh)}</p></div>` : ""}
               </div>
             </div>
-
-            <!-- Action buttons footer -->
+            <div class="note-block">
+              <label class="note-label"><i class="fa-solid fa-pen"></i> My notes / 备注</label>
+              <textarea class="note-input" data-key="${escapeHtml(key)}" placeholder="Write your thoughts on this paper...">${escapeHtml(note)}</textarea>
+            </div>
             <div class="card-footer">
-              <a href="${paper.url}" target="_blank" class="read-btn">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Read Full Paper / 原文链接
+              <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="read-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Read Full Paper
               </a>
-              <div class="action-icon-group">
-                <button class="icon-btn btn-bookmark" data-title="${paper.title}">
-                  <i class="${isBookmarked} fa-bookmark"></i>
-                </button>
-                <button class="icon-btn btn-share" data-title="${paper.title}" data-url="${paper.url}">
-                  <i class="fa-solid fa-share-nodes"></i>
-                </button>
-              </div>
             </div>
           </article>
         `;
-      }).join('');
+      }).join("");
 
-      // Wire up card tab switching
-      container.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const tabId = btn.getAttribute('data-tab');
-          const column = btn.closest('.card-column');
-          
-          column.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-          column.querySelectorAll('.tabs-pane').forEach(p => p.classList.remove('active'));
-          
-          btn.classList.add('active');
-          column.querySelector(`#${tabId}`).classList.add('active');
+      list.querySelectorAll(".btn-unsave").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const key = btn.getAttribute("data-key");
+          getMeta(key).status = null;
+          persist();
+          updateCollectionCount();
+          renderCollection();
         });
       });
-
-      // Bookmark action listener
-      container.querySelectorAll('.btn-bookmark').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const title = btn.getAttribute('data-title');
-          const icon = btn.querySelector('i');
-          if (appState.bookmarked.has(title)) {
-            appState.bookmarked.delete(title);
-            icon.className = "fa-regular fa-bookmark";
-          } else {
-            appState.bookmarked.add(title);
-            icon.className = "fa-solid fa-bookmark";
-          }
-        });
-      });
-
-      // Share button listener
-      container.querySelectorAll('.btn-share').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const title = btn.getAttribute('data-title');
-          const url = btn.getAttribute('data-url');
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(`${title} - ${url}`);
-            alert(`Copied link to clipboard:\n${title}`);
-          }
-        });
-      });
-
-      // Update sidebar stats
-      updateStats(activeWeek, filteredPapers);
+      wireNoteInput(list);
     }
 
-    // Recalculate and draw Linguistics Insights View
-    function renderLinguisticDashboard() {
-      const activeWeek = PAPER_DATA.weeks.find(w => w.id === appState.activeWeekId);
-      if (!activeWeek) return;
-
-      document.getElementById("ling-overview-title").innerText = `📊 Linguistic Metrics for ${activeWeek.title.split(" (")[0]}`;
-
-      // 1. Terminology Word Cloud
-      const words = computeWordFrequencies(activeWeek);
-      // Wait for layout rendering, then draw
-      setTimeout(() => {
-        renderWordCloud('wordcloud-canvas', words);
-      }, 50);
-
-      // 2. Semantic Dimension Vectors (Radar Chart)
-      const dimensions = computeLinguisticDimensions(activeWeek);
-      setTimeout(() => {
-        renderRadarChart('radar-canvas', dimensions);
-      }, 50);
-
-      // 3. Sentiment Balance orientation
-      const sentiment = computeSentimentTone(activeWeek);
-      const slider = document.getElementById("sentiment-slider");
-      slider.style.width = `${sentiment.optimismPct}%`;
-      
-      document.getElementById("sentiment-cautious-pct").innerText = `Caution: ${sentiment.cautionPct}% (Lexical frequency: ${sentiment.cautious})`;
-      document.getElementById("sentiment-optimism-pct").innerText = `Optimism: ${sentiment.optimismPct}% (Lexical frequency: ${sentiment.positive})`;
-    }
-
-    // Update weekly metrics in sidebar
-    function updateStats(activeWeek, currentPapers) {
+    function updateStats(activeWeek) {
       let gdmCount = 0;
       let anthropicCount = 0;
-
       activeWeek.papers.forEach(p => {
-        if (p.publisher.toLowerCase().includes('google')) gdmCount++;
-        if (p.publisher.toLowerCase().includes('anthropic')) anthropicCount++;
+        if (p.publisher.toLowerCase().includes("google")) gdmCount++;
+        if (p.publisher.toLowerCase().includes("anthropic")) anthropicCount++;
       });
-
       const total = gdmCount + anthropicCount || 1;
-      const gdmPct = (gdmCount / total) * 100;
-      const anthropicPct = (anthropicCount / total) * 100;
-
       document.getElementById("stats-count-google").innerText = gdmCount;
       document.getElementById("stats-count-anthropic").innerText = anthropicCount;
-      document.getElementById("stats-bar-google").style.width = `${gdmPct}%`;
-      document.getElementById("stats-bar-anthropic").style.width = `${anthropicPct}%`;
+      document.getElementById("stats-bar-google").style.width = `${(gdmCount / total) * 100}%`;
+      document.getElementById("stats-bar-anthropic").style.width = `${(anthropicCount / total) * 100}%`;
     }
 
-    // Theme Toggle Logic
+    // Theme
     const themeBtn = document.getElementById("btn-theme-toggle");
     themeBtn.addEventListener("click", () => {
       appState.isLightMode = !appState.isLightMode;
       document.body.classList.toggle("light-mode", appState.isLightMode);
-      
       const icon = themeBtn.querySelector("i");
       const span = themeBtn.querySelector("span");
-      
       if (appState.isLightMode) {
         icon.className = "fa-solid fa-sun";
         span.innerText = "Light Mode";
@@ -594,14 +713,10 @@
         icon.className = "fa-solid fa-moon";
         span.innerText = "Dark Mode";
       }
-
-      // Re-render canvases to adapt text colors to new theme backgrounds
-      if (appState.activeView === "linguistics") {
-        renderLinguisticDashboard();
-      }
+      persist();
     });
 
-    // Mock chatbot logic
+    // Chat assistant
     const assistantBtn = document.getElementById("assistant-trigger-btn");
     const assistantPanel = document.getElementById("assistant-panel");
     const closeAssistantBtn = document.getElementById("btn-close-assistant");
@@ -611,14 +726,9 @@
 
     assistantBtn.addEventListener("click", () => {
       assistantPanel.classList.toggle("open");
-      if (assistantPanel.classList.contains("open")) {
-        chatInput.focus();
-      }
+      if (assistantPanel.classList.contains("open")) chatInput.focus();
     });
-
-    closeAssistantBtn.addEventListener("click", () => {
-      assistantPanel.classList.remove("open");
-    });
+    closeAssistantBtn.addEventListener("click", () => assistantPanel.classList.remove("open"));
 
     function appendMessage(sender, text) {
       const msg = document.createElement("div");
@@ -631,43 +741,47 @@
     function handleChat() {
       const text = chatInput.value.trim();
       if (!text) return;
-
       appendMessage("user", text);
       chatInput.value = "";
-
       const query = text.toLowerCase();
-      let reply = "I can only help explain papers from this week. Could you try asking about <strong>Jacobian Lens</strong>, <strong>GRAM</strong>, <strong>AlphaEvolve</strong>, or the <strong>AGI Safety Gate</strong>?";
+      let reply = "I can help explain papers from this week. Try asking about <strong>Jacobian Lens</strong>, <strong>GRAM</strong>, <strong>AlphaEvolve</strong>, or the <strong>AGI Safety Gate</strong>.";
 
       if (query.includes("jacobian") || query.includes("j-lens") || query.includes("j-space") || query.includes("workspace")) {
-        reply = "The <strong>Jacobian Lens (J-lens)</strong> is a new technique from Anthropic that probes model activations. It identifies a 'J-space' inside Claude—a privileged workspace containing concepts that the model can explicitly reason with and report on, rather than processing them implicitly.";
+        reply = "The <strong>Jacobian Lens (J-lens)</strong> probes model activations and identifies a 'J-space' inside Claude—a privileged workspace for explicit, verbalizable reasoning.";
       } else if (query.includes("gram") || query.includes("modular")) {
-        reply = "<strong>GRAM (Gradient Routed Auxiliary Modules)</strong> is a pretraining framework. It isolates specific high-risk knowledge (like bioweapon or cyberattack info) into dedicated training modules. These modules can then be locked or disabled entirely without degrading Claude's general performance in coding or math.";
+        reply = "<strong>GRAM</strong> isolates high-risk knowledge into auxiliary modules that can be locked or disabled without hurting general performance.";
       } else if (query.includes("alphaevolve") || query.includes("quantum")) {
-        reply = "<strong>AlphaEvolve</strong> is DeepMind's RL-evolutionary algorithm model. It has optimized TPU floorplans and Google Spanner databases. In physics, it discovered quantum circuits with 15% fewer error rates, showing AI can design its own hardware substrate.";
+        reply = "<strong>AlphaEvolve</strong> optimizes hardware and quantum circuits via RL + evolution—e.g. faster TPU floorplanning and lower-error quantum layouts.";
       } else if (query.includes("agi") || query.includes("asi") || query.includes("superintelligence") || query.includes("safety gate")) {
-        reply = "DeepMind's <strong>From AGI to ASI</strong> paper outlines capability triggers. It defines safety thresholds mathematically based on agent autonomy and recursive self-improvement rates, recommending an 'ASI Safety Gate' protocol prior to deployment.";
+        reply = "DeepMind's <strong>From AGI to ASI</strong> paper defines capability thresholds and safety protocols for the transition toward superintelligence.";
       } else if (query.includes("icml") || query.includes("routing")) {
-        reply = "At ICML 2026, DeepMind presented papers on <strong>Model Selection at Scale</strong>. They detail dynamic query-routing cascading algorithms that send queries to the smallest capable model, cutting server costs and latency by 40%.";
+        reply = "At ICML 2026, DeepMind work on <strong>model routing</strong> sends queries to the smallest capable model, cutting cost and latency.";
       } else if (query.includes("predicting") || query.includes("past") || query.includes("ancient") || query.includes("ithaca")) {
-        reply = "The <strong>Predicting the Past</strong> paper details Gemini interacting with Ithaca (ancient text restoration) and Aeneas (dating model), enabling epigraphists to converse with specialized historical models and restore text with 78% accuracy.";
+        reply = "<strong>Predicting the Past</strong> wraps Gemini around Ithaca/Aeneas so historians can restore and date ancient inscriptions conversationally.";
       }
 
-      setTimeout(() => {
-        appendMessage("bot", reply);
-      }, 600);
+      setTimeout(() => appendMessage("bot", reply), 500);
     }
 
     sendChatBtn.addEventListener("click", handleChat);
-    chatInput.addEventListener("keypress", (e) => {
+    chatInput.addEventListener("keypress", e => {
       if (e.key === "Enter") handleChat();
     });
 
-    // Start App
     window.addEventListener("DOMContentLoaded", () => {
+      loadPersisted();
+      if (appState.isLightMode) {
+        document.body.classList.add("light-mode");
+        themeBtn.querySelector("i").className = "fa-solid fa-sun";
+        themeBtn.querySelector("span").innerText = "Light Mode";
+      }
       renderWeekList();
       setupFilters();
       setupViewTabs();
-      renderFeed();
+      setupSwipeControls();
+      rebuildDeck();
+      renderSwipeCard();
+      updateCollectionCount();
     });
   </script>
 </body>

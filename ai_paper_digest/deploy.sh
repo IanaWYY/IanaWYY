@@ -11,7 +11,7 @@ echo "🚀 Preparing to push AI Paper Digest to GitHub..."
 git add ai_paper_digest/
 
 # Commit changes
-commit_message="deploy: add/update AI Paper Digest weekly feed with linguistic insights ($(date '+%Y-%m-%d %H:%M:%S'))"
+commit_message="deploy: update AI Paper Digest swipe feed & collection ($(date '+%Y-%m-%d %H:%M:%S'))"
 git commit -m "$commit_message"
 
 # Push to remote (auto-detect branch name, e.g. main or master)
