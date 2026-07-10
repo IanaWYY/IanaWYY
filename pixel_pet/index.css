@@ -1,0 +1,599 @@
+/* Custom CSS Design System - Antigravity Pixel Pet Studio */
+
+:root {
+  --primary-glow: rgba(0, 210, 211, 0.3);
+  --primary-color: #00d2d3;
+  --secondary-color: #ff9f43;
+  --bg-dark: #1e272e;
+  --window-bg: rgba(26, 36, 43, 0.55);
+  --border-light: rgba(255, 255, 255, 0.12);
+  --text-primary: #ffffff;
+  --text-secondary: #cad3c8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-primary);
+  background-color: #111;
+}
+
+/* Virtual Desktop Environment */
+.desktop {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.desktop-wallpaper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background-size: cover;
+  transition: filter 1.5s ease, background 1.5s ease;
+}
+
+/* Cozy starry night wallpaper in night theme */
+.night-theme .desktop-wallpaper {
+  background: linear-gradient(180deg, #091326 0%, #0f2042 50%, #1c325c 100%);
+}
+
+.night-theme .desktop-wallpaper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  opacity: 0.45;
+  animation: starsTwinkle 10s infinite linear;
+}
+
+@keyframes starsTwinkle {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+.desktop-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.45) 100%);
+  pointer-events: none;
+}
+
+/* Fullscreen Canvas for Pet & Objects rendering */
+#pet-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: auto; /* allows click triggers */
+  cursor: grab;
+}
+
+#pet-canvas:active {
+  cursor: grabbing;
+}
+
+/* Desktop shortcut icons */
+.desktop-icons {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 3; /* Clickable above canvas */
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.desktop-icon {
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.desktop-icon:hover {
+  transform: scale(1.1);
+}
+
+.icon-img-wrapper {
+  width: 54px;
+  height: 54px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.desktop-icon:hover .icon-img-wrapper {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 15px var(--primary-glow);
+  border-color: var(--primary-color);
+}
+
+.icon-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Glassmorphic Window Frame */
+.window-frame {
+  position: absolute;
+  z-index: 5; /* default depth, focused gets 10 */
+  background: var(--window-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.1, 0.8, 0.2, 1);
+  max-width: 90vw;
+}
+
+.window-frame.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95) translateY(15px);
+}
+
+.window-header {
+  height: 38px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: move;
+}
+
+.window-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--text-primary);
+}
+
+.btn-close {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-close:hover {
+  background: #ff5f56;
+  color: #fff;
+}
+
+.window-content {
+  padding: 18px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Status / Care Panel Styling */
+.status-window {
+  width: 330px;
+  left: calc(100vw - 360px);
+  top: 40px;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--text-secondary);
+  width: 100px;
+}
+
+.stat-bar-outer {
+  flex-grow: 1;
+  height: 14px;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 7px;
+  overflow: hidden;
+  padding: 1px;
+}
+
+.stat-bar-inner {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.4s cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+.hunger-color {
+  background: linear-gradient(90deg, #ff4757, #ff6b81);
+  box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+}
+
+.energy-color {
+  background: linear-gradient(90deg, #ffa502, #ffb142);
+  box-shadow: 0 0 10px rgba(255, 165, 2, 0.5);
+}
+
+.love-color {
+  background: linear-gradient(90deg, #2ed573, #7bed9f);
+  box-shadow: 0 0 10px rgba(46, 213, 115, 0.5);
+}
+
+.stat-val-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-shadow: 0 0 8px rgba(0, 210, 211, 0.2);
+}
+
+.window-divider {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 18px 0;
+}
+
+/* Control buttons grid */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 10px;
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-glow);
+  transform: translateY(-2px);
+}
+
+.control-btn:active {
+  transform: translateY(0);
+}
+
+/* Shop Window Styling */
+.shop-window {
+  width: 360px;
+  left: 100px;
+  top: 120px;
+}
+
+.coins-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px dashed rgba(255, 215, 0, 0.3);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.coin-icon {
+  font-size: 18px;
+}
+
+.shop-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Shop custom scrollbar */
+.shop-items-list::-webkit-scrollbar,
+.log-container::-webkit-scrollbar {
+  width: 6px;
+}
+.shop-items-list::-webkit-scrollbar-thumb,
+.log-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.shop-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  gap: 10px;
+}
+
+.shop-card-info {
+  flex-grow: 1;
+}
+
+.shop-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.shop-card-desc {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.shop-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 80px;
+  transition: all 0.2s ease;
+}
+
+.btn-buy {
+  background: var(--secondary-color);
+  color: #fff;
+}
+.btn-buy:hover {
+  background: #ff7f11;
+  box-shadow: 0 0 10px rgba(255, 159, 67, 0.4);
+}
+
+.btn-equip {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+.btn-equip:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-color);
+}
+.btn-equip.active {
+  background: var(--primary-color);
+  color: #1e272e;
+  border-color: transparent;
+  font-weight: 800;
+}
+
+/* Logs Window Styling */
+.logs-window {
+  width: 320px;
+  left: 40px;
+  top: calc(100vh - 300px);
+}
+
+.log-container {
+  height: 140px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+}
+
+.log-line {
+  color: #7bed9f;
+  word-break: break-all;
+  border-left: 2px solid var(--primary-color);
+  padding-left: 6px;
+}
+
+/* Minigame Window styling */
+.game-window {
+  width: 450px;
+  left: calc(50vw - 225px);
+  top: 100px;
+}
+
+.game-instruction {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.canvas-container {
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #2f3542;
+  margin-bottom: 14px;
+  display: flex;
+}
+
+#minigame-canvas {
+  width: 100%;
+  height: 220px;
+  display: block;
+}
+
+.btn-primary-action {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-color), #0984e3);
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 210, 211, 0.4);
+}
+
+.btn-primary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 210, 211, 0.6);
+}
+
+/* Taskbar Style */
+.taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: rgba(15, 23, 30, 0.85);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid var(--border-light);
+  z-index: 9; /* below window focus, above canvas */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.taskbar-left, .taskbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.taskbar-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 5px 12px;
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.taskbar-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--primary-color);
+}
+
+.taskbar-btn.active {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(0, 210, 211, 0.08);
+}
+
+.active-task {
+  font-weight: 700;
+  border-color: rgba(255, 255, 255, 0.2);
+  cursor: default;
+}
+
+.active-task:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.instruction-guide {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.85;
+}
+
+.system-clock {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--text-secondary);
+  background: rgba(0,0,0,0.3);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* Night Overlay Filter */
+.night-theme::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(11, 15, 36, 0.35); /* dark blue tint */
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 8; /* applies overlay to windows too! */
+  transition: background-color 1.5s ease;
+}

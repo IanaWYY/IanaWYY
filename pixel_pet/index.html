@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Pixel Pet Studio 🐱</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Virtual Desktop Environment -->
+  <div id="desktop" class="desktop">
+    <!-- Desktop Wallpaper Background Layer (for overlay filters like night mode) -->
+    <div class="desktop-wallpaper"></div>
+    <div class="desktop-vignette"></div>
+
+    <!-- Desktop Icons (Shortcut launch shortcuts) -->
+    <div class="desktop-icons">
+      <div class="desktop-icon" id="icon-status">
+        <div class="icon-img-wrapper">❤️</div>
+        <div class="icon-label">My Pet</div>
+      </div>
+      <div class="desktop-icon" id="icon-shop">
+        <div class="icon-img-wrapper">🛍️</div>
+        <div class="icon-label">Pet Shop</div>
+      </div>
+      <div class="desktop-icon" id="icon-game">
+        <div class="icon-img-wrapper">🎮</div>
+        <div class="icon-label">Minigame</div>
+      </div>
+      <div class="desktop-icon" id="icon-logs">
+        <div class="icon-img-wrapper">🗒️</div>
+        <div class="icon-label">Pet Thoughts</div>
+      </div>
+    </div>
+
+    <!-- Fullscreen Pet Playground Canvas (pet, food, toys, particles are rendered here) -->
+    <canvas id="pet-canvas"></canvas>
+
+    <!-- FLOATING WINDOWS -->
+    
+    <!-- 1. Pet Stats & Interaction Panel -->
+    <div id="window-status" class="window-frame status-window">
+      <div class="window-header">
+        <div class="window-title">🐾 Pet Care Dashboard</div>
+        <button class="btn-close">×</button>
+      </div>
+      <div class="window-content">
+        <!-- Pet Stat Bars -->
+        <div class="stats-container">
+          <div class="stat-row">
+            <span class="stat-label">🍗 Hunger:</span>
+            <div class="stat-bar-outer">
+              <div id="hunger-bar" class="stat-bar-inner hunger-color" style="width: 80%;"></div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">⚡ Energy:</span>
+            <div class="stat-bar-outer">
+              <div id="energy-bar" class="stat-bar-inner energy-color" style="width: 90%;"></div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">❤️ Love:</span>
+            <div class="stat-bar-outer">
+              <div id="love-bar" class="stat-bar-inner love-color" style="width: 60%;"></div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">🧠 Mood:</span>
+            <span id="mood-value" class="stat-val-text">Happy 😊</span>
+          </div>
+        </div>
+
+        <hr class="window-divider">
+
+        <!-- Interaction Buttons -->
+        <div class="controls-grid">
+          <button id="btn-feed" class="control-btn">🍎 Feed Pet</button>
+          <button id="btn-play" class="control-btn">🎾 Drop Toy</button>
+          <button id="btn-pet" class="control-btn">👋 Pet Head</button>
+          <button id="btn-sleep" class="control-btn">💤 Sleep</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Customization Shop & Wardrobe -->
+    <div id="window-shop" class="window-frame shop-window hidden">
+      <div class="window-header">
+        <div class="window-title">🛍️ Pixel Wardrobe & Skins</div>
+        <button class="btn-close">×</button>
+      </div>
+      <div class="window-content">
+        <div class="coins-display">
+          <span>Your Coins: </span>
+          <span class="coin-icon">🪙</span>
+          <strong id="coin-count">100</strong>
+        </div>
+        <div class="shop-items-list" id="shop-items-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Retro Catch Food Minigame -->
+    <div id="window-game" class="window-frame game-window hidden">
+      <div class="window-header">
+        <div class="window-title">🎮 Retro Catch!</div>
+        <button class="btn-close">×</button>
+      </div>
+      <div class="window-content">
+        <p class="game-instruction">Move your pet with your mouse/touch or <strong>Left/Right arrows</strong>. Catch green apples, avoid red bombs!</p>
+        <div class="canvas-container">
+          <canvas id="minigame-canvas" width="410" height="220"></canvas>
+        </div>
+        <button id="btn-start-game" class="btn-primary-action">🎮 Start Catch Game</button>
+      </div>
+    </div>
+
+    <!-- 4. Pet Action Logs / Thoughts -->
+    <div id="window-logs" class="window-frame logs-window">
+      <div class="window-header">
+        <div class="window-title">🗒️ Pet Activity Logs</div>
+        <button class="btn-close">×</button>
+      </div>
+      <div class="window-content log-container" id="log-content">
+        <!-- Log messages populated dynamically -->
+      </div>
+    </div>
+
+    <!-- Taskbar bottom -->
+    <div class="taskbar">
+      <div class="taskbar-left">
+        <button class="taskbar-btn active-task">🌟 Antigravity Pet Studio v1.0</button>
+        <button id="btn-music" class="taskbar-btn">📻 Play BGM</button>
+        <button id="btn-mute" class="taskbar-btn">🔊 Mute SFX</button>
+      </div>
+      <div class="taskbar-right">
+        <span class="instruction-guide">💡 Drag pet to throw & bounce!</span>
+        <span class="system-clock" id="taskbar-clock">11:45 AM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Script -->
+  <script src="sound.js"></script>
+  <!-- Sprites Assets -->
+  <script src="sprites.js"></script>
+  <!-- Core App Logic -->
+  <script src="app.js"></script>
+
+  <!-- Simple clock updates script -->
+  <script>
+    function updateClock() {
+      const clockEl = document.getElementById('taskbar-clock');
+      if (clockEl) {
+        const now = new Date();
+        clockEl.innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
