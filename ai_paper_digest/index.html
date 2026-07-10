@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether AI Research Feed ⚡</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Courier+New&display=swap" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <!-- Brand Title -->
+    <div class="brand-section">
+      <div class="brand-logo">⚡</div>
+      <h1 class="brand-title">Aether AI Feed</h1>
+    </div>
+
+    <!-- Workspace View Tabs -->
+    <div class="view-tabs">
+      <button class="view-tab-btn active" id="tab-feed">
+        <i class="fa-solid fa-newspaper"></i> <span>Weekly Digest</span>
+      </button>
+      <button class="view-tab-btn" id="tab-linguistics">
+        <i class="fa-solid fa-chart-bar"></i> <span>Linguistic Insights</span>
+      </button>
+    </div>
+
+    <!-- Scroller Section -->
+    <div class="sidebar-scroll">
+      <!-- Week Navigation -->
+      <div>
+        <h3 class="sidebar-section-title">📅 Timeline Weeks</h3>
+        <ul class="week-list" id="week-list-container">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+
+      <hr class="sidebar-divider">
+
+      <!-- Publisher Filters -->
+      <div>
+        <h3 class="sidebar-section-title">🏢 Publisher</h3>
+        <div class="filter-group" id="publisher-filters">
+          <div class="checkbox-btn active" data-filter="publisher" data-value="Google DeepMind">
+            <span class="dot dot-google"></span> Google DeepMind
+          </div>
+          <div class="checkbox-btn active" data-filter="publisher" data-value="Anthropic">
+            <span class="dot dot-anthropic"></span> Anthropic
+          </div>
+          <div class="checkbox-btn active" data-filter="publisher" data-value="OpenAI">
+            <span class="dot dot-openai"></span> OpenAI
+          </div>
+        </div>
+      </div>
+
+      <hr class="sidebar-divider">
+
+      <!-- Research Category Filters -->
+      <div>
+        <h3 class="sidebar-section-title">🏷️ Categories</h3>
+        <div class="filter-group" id="category-filters">
+          <div class="checkbox-btn active" data-filter="category" data-value="Interpretability">Interpretability</div>
+          <div class="checkbox-btn active" data-filter="category" data-value="Safety & Alignment">Safety & Alignment</div>
+          <div class="checkbox-btn active" data-filter="category" data-value="Model Architecture">Architecture</div>
+          <div class="checkbox-btn active" data-filter="category" data-value="Systems & Optimization">Systems & Opt</div>
+          <div class="checkbox-btn active" data-filter="category" data-value="Applications">Applications</div>
+        </div>
+      </div>
+
+      <!-- Weekly Stats Widget -->
+      <div class="stats-widget">
+        <h3 class="sidebar-section-title" style="margin-bottom: 8px;">📊 Week Stats</h3>
+        <div class="stats-widget-row">
+          <span style="font-size:11px;">Google DeepMind</span>
+          <strong id="stats-count-google">0</strong>
+        </div>
+        <div class="stats-widget-row">
+          <span style="font-size:11px;">Anthropic</span>
+          <strong id="stats-count-anthropic">0</strong>
+        </div>
+        <div class="stats-widget-bar-outer">
+          <div id="stats-bar-google" class="stats-widget-bar-inner" style="background-color: var(--accent-blue); width: 50%;"></div>
+          <div id="stats-bar-anthropic" class="stats-widget-bar-inner" style="background-color: var(--accent-orange); width: 50%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar footer theme toggle -->
+    <div class="sidebar-footer">
+      <button class="theme-toggle-btn" id="btn-theme-toggle">
+        <i class="fa-solid fa-moon"></i> <span>Dark Mode</span>
+      </button>
+      <span style="font-size: 10px; color: var(--text-secondary);">v1.2</span>
+    </div>
+  </aside>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="main-content">
+    <!-- Header Search Bar -->
+    <header class="header">
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" class="search-input" id="search-input" placeholder="Search papers, TL;DRs, keywords...">
+      </div>
+      <div class="header-actions">
+        <span class="header-tagline">✨ Tracking AI Frontiers in Dual Languages</span>
+      </div>
+    </header>
+
+    <!-- VIEW 1: Weekly Digest Feed (Dual Columns EN/ZH) -->
+    <section class="feed-view" id="feed-view-container">
+      <!-- Weekly Summary Overview -->
+      <div class="week-overview-card">
+        <h2 class="overview-title" id="overview-title">This Week in AI</h2>
+        <p class="overview-text" id="overview-text">Loading weekly context...</p>
+      </div>
+
+      <!-- Dynamic Cards Grid -->
+      <div class="papers-grid" id="papers-grid-container">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: Linguistic Insights Dashboard -->
+    <section class="linguistics-view hidden" id="linguistics-view-container">
+      <div class="week-overview-card">
+        <h2 class="overview-title" id="ling-overview-title">Linguistic Semantic Insights</h2>
+        <p class="overview-text">Analyzing the frequency of technical jargon, emotional vectors, and orientation balances across the active week's abstracts.</p>
+      </div>
+
+      <div class="linguistic-dashboard">
+        <!-- Card 1: Word Frequency Cloud -->
+        <div class="linguistic-card">
+          <div class="linguistic-card-header">
+            <h3 class="linguistic-card-title">📖 Terminology Word Cloud</h3>
+          </div>
+          <p class="linguistic-card-desc">Programmatic spiral placement of the most frequent non-stopword tokens from abstracts this week. Larger size indicates higher frequency.</p>
+          <div class="canvas-wrapper">
+            <canvas id="wordcloud-canvas" height="250"></canvas>
+          </div>
+        </div>
+
+        <!-- Card 2: Sentiment Orientation Vector -->
+        <div class="linguistic-card">
+          <div class="linguistic-card-header">
+            <h3 class="linguistic-card-title">⚖️ Sentiment Balance Vector</h3>
+          </div>
+          <p class="linguistic-card-desc">Matches abstracts against lexical keywords of Opportunity/Optimism (performance, optimize, breakthrough) vs. Caution/Risk (threat, containment, failure).</p>
+          
+          <div class="sentiment-gauge-container">
+            <div class="gauge-labels">
+              <span style="color: var(--accent-orange);"><i class="fa-solid fa-shield-halved"></i> Caution / 风险警惕</span>
+              <span style="color: var(--accent-green);"><i class="fa-solid fa-seedling"></i> Optimism / 乐观前瞻</span>
+            </div>
+            <div class="gauge-slider-outer">
+              <div class="gauge-slider-inner" id="sentiment-slider" style="width: 50%;"></div>
+            </div>
+            <div class="sentiment-breakdown">
+              <span id="sentiment-cautious-pct">Caution: 50%</span>
+              <span id="sentiment-optimism-pct">Optimism: 50%</span>
+            </div>
+          </div>
+
+          <hr class="window-divider" style="margin: 12px 0;">
+          <div class="axis-explain-text" style="font-size: 12px;">
+            <strong>Linguistic Interpretation:</strong> Sentiment indices measure the tone balance of researchers. High safety/risk keyword presence indicates a focus on regulatory frameworks and failure audits, while high optimism indicates architectural breakthroughs or performance speedups.
+          </div>
+        </div>
+
+        <!-- Card 3: Linguistic Dimension Vectors (Radar Layout) -->
+        <div class="linguistic-card linguistic-card-wide">
+          <div class="linguistic-card-header">
+            <h3 class="linguistic-card-title">🕸️ Research Orientation Dimension Radar</h3>
+          </div>
+          <p class="linguistic-card-desc">Calculates semantic projection scores across 4 key dimensions: Empirical Scale, Theoretical Rigor, Safety & Control, and Agent Autonomy.</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
+            <div class="canvas-wrapper" style="border: none; background: none;">
+              <canvas id="radar-canvas" height="250"></canvas>
+            </div>
+            <div class="axis-explain-grid">
+              <div class="axis-explain-card">
+                <h4 class="axis-explain-title"><i class="fa-solid fa-microchip"></i> Empirical Scale</h4>
+                <p class="axis-explain-text">Focuses on parameter size scaling, GPU/TPU compilation speedups, optimization benchmarks, and engineering throughput.</p>
+              </div>
+              <div class="axis-explain-card">
+                <h4 class="axis-explain-title"><i class="fa-solid fa-graduation-cap"></i> Theoretical Rigor</h4>
+                <p class="axis-explain-text">Focuses on mathematical formulations, formal proofs, structural theorems, interpretability mappings, and mechanistic circuit models.</p>
+              </div>
+              <div class="axis-explain-card">
+                <h4 class="axis-explain-title"><i class="fa-solid fa-lock"></i> Safety & Control</h4>
+                <p class="axis-explain-text">Focuses on human alignment constraints, audit mechanisms, capability gating, sandbox testing, and toxic output prevention.</p>
+              </div>
+              <div class="axis-explain-card">
+                <h4 class="axis-explain-title"><i class="fa-solid fa-robot"></i> Agent Autonomy</h4>
+                <p class="axis-explain-text">Focuses on autonomous scientific exploration, multi-agent coordination systems, recursive self-coding speeds, and decision models.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FLOATING AI ASSISTANT CHAT -->
+  <div class="ai-assistant-widget">
+    <div class="assistant-panel" id="assistant-panel">
+      <div class="panel-header">
+        <div class="panel-title">🤖 <span style="font-weight:700;">Aether Assistant</span></div>
+        <button class="btn-close" id="btn-close-assistant" style="background:none;">×</button>
+      </div>
+      <div class="panel-body" id="chat-box-body">
+        <div class="chat-bubble bot">
+          Hi! I can explain any research paper from this week. Try asking:
+          <br><em>"What is J-space?"</em> or
+          <br><em>"What is modular pretraining?"</em>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <input type="text" class="chat-input" id="chat-input-box" placeholder="Ask about this week's papers...">
+        <button class="chat-send-btn" id="btn-send-chat">Send</button>
+      </div>
+    </div>
+    <button class="assistant-trigger" id="assistant-trigger-btn">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </button>
+  </div>
+
+  <!-- Javascript logic -->
+  <script src="data.js"></script>
+  <script src="linguistics.js"></script>
+  <script>
+    // State management
+    const appState = {
+      activeView: "feed", // "feed" or "linguistics"
+      activeWeekId: "week-28",
+      selectedPublishers: ["Google DeepMind", "Anthropic", "OpenAI"],
+      selectedCategories: ["Interpretability", "Safety & Alignment", "Model Architecture", "Systems & Optimization", "Applications"],
+      searchQuery: "",
+      isLightMode: false,
+      bookmarked: new Set()
+    };
+
+    // Toggle Workspace views (Feed vs Linguistics)
+    function setupViewTabs() {
+      const btnFeed = document.getElementById('tab-feed');
+      const btnLing = document.getElementById('tab-tab'); // wait, the button id is tab-linguistics
+      const tabLinguistics = document.getElementById('tab-linguistics');
+      
+      const viewFeed = document.getElementById('feed-view-container');
+      const viewLing = document.getElementById('linguistics-view-container');
+
+      tabLinguistics.addEventListener('click', () => {
+        appState.activeView = "linguistics";
+        tabLinguistics.classList.add('active');
+        btnFeed.classList.remove('active');
+        
+        viewLing.classList.remove('hidden');
+        viewFeed.classList.add('hidden');
+        
+        renderLinguisticDashboard();
+      });
+
+      btnFeed.addEventListener('click', () => {
+        appState.activeView = "feed";
+        btnFeed.classList.add('active');
+        tabLinguistics.classList.remove('active');
+        
+        viewFeed.classList.remove('hidden');
+        viewLing.classList.add('hidden');
+        
+        renderFeed();
+      });
+    }
+
+    // Render timeline weeks in sidebar
+    function renderWeekList() {
+      const container = document.getElementById("week-list-container");
+      container.innerHTML = PAPER_DATA.weeks.map(week => {
+        const isActive = week.id === appState.activeWeekId ? "active" : "";
+        return `
+          <li class="week-item ${isActive}" data-id="${week.id}">
+            <span class="week-item-title">${week.id === "week-28" ? "🔥 " : ""}${week.title.split(" (")[0]}</span>
+            <span class="week-item-badge">${week.papers.length}</span>
+          </li>
+        `;
+      }).join('');
+
+      // Add click handlers
+      container.querySelectorAll('.week-item').forEach(item => {
+        item.addEventListener('click', () => {
+          appState.activeWeekId = item.getAttribute('data-id');
+          renderWeekList();
+          if (appState.activeView === "feed") {
+            renderFeed();
+          } else {
+            renderLinguisticDashboard();
+          }
+        });
+      });
+    }
+
+    // Toggle filter selections
+    function setupFilters() {
+      // Publisher
+      document.querySelectorAll('#publisher-filters .checkbox-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-value');
+          btn.classList.toggle('active');
+          
+          if (appState.selectedPublishers.includes(val)) {
+            appState.selectedPublishers = appState.selectedPublishers.filter(p => p !== val);
+          } else {
+            appState.selectedPublishers.push(val);
+          }
+          if (appState.activeView === "feed") renderFeed();
+        });
+      });
+
+      // Categories
+      document.querySelectorAll('#category-filters .checkbox-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-value');
+          btn.classList.toggle('active');
+          
+          if (appState.selectedCategories.includes(val)) {
+            appState.selectedCategories = appState.selectedCategories.filter(c => c !== val);
+          } else {
+            appState.selectedCategories.push(val);
+          }
+          if (appState.activeView === "feed") renderFeed();
+        });
+      });
+
+      // Search query binding
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        appState.searchQuery = e.target.value.toLowerCase().trim();
+        if (appState.activeView === "feed") renderFeed();
+      });
+    }
+
+    // Render main papers feed
+    function renderFeed() {
+      const activeWeek = PAPER_DATA.weeks.find(w => w.id === appState.activeWeekId);
+      if (!activeWeek) return;
+
+      // Update Header/Overview content
+      document.getElementById("overview-title").innerText = `⚡ ${activeWeek.title} Summary`;
+      document.getElementById("overview-text").innerText = activeWeek.summary;
+
+      // Filter papers
+      const filteredPapers = activeWeek.papers.filter(paper => {
+        const matchesPublisher = appState.selectedPublishers.includes(paper.publisher);
+        const matchesCategory = appState.selectedCategories.includes(paper.category);
+        
+        const textBlob = `${paper.title} ${paper.title_zh} ${paper.tldr} ${paper.summary} ${paper.category} ${paper.publisher}`.toLowerCase();
+        const matchesSearch = appState.searchQuery === "" || textBlob.includes(appState.searchQuery);
+
+        return matchesPublisher && matchesCategory && matchesSearch;
+      });
+
+      // Render cards
+      const container = document.getElementById("papers-grid-container");
+      if (filteredPapers.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>No Research Papers Found</h3>
+            <p>Try adjusting your search terms or filter configurations in the sidebar.</p>
+          </div>
+        `;
+        updateStats(activeWeek, []);
+        return;
+      }
+
+      container.innerHTML = filteredPapers.map((paper, idx) => {
+        const isBookmarked = appState.bookmarked.has(paper.title) ? "fa-solid" : "fa-regular";
+        
+        // Render paper card layout (Dual column side by side EN/ZH)
+        return `
+          <article class="paper-card" data-publisher="${paper.publisher}">
+            <!-- Top row metadata -->
+            <div class="card-top">
+              <div class="publisher-badge">
+                <div class="publisher-avatar avatar-${paper.publisher.toLowerCase().includes('google') ? 'google' : paper.publisher.toLowerCase().includes('openai') ? 'openai' : 'anthropic'}">
+                  ${paper.publisher.charAt(0)}
+                </div>
+                <span>${paper.publisher}</span>
+              </div>
+              <div class="card-meta">
+                <span>${paper.date}</span>
+                <span class="category-tag">${paper.category}</span>
+              </div>
+            </div>
+
+            <!-- Two column layout: EN left, ZH right -->
+            <div class="card-columns">
+              <!-- Left Column: English -->
+              <div class="card-column en-col">
+                <div class="column-lang-tag">English Source</div>
+                <a href="${paper.url}" target="_blank" class="paper-title-link">${paper.title}</a>
+                
+                <div class="tldr-box">
+                  <strong>TL;DR:</strong> ${paper.tldr}
+                </div>
+
+                <div class="tabs-container">
+                  <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="summary-en-${idx}">Summary</button>
+                    <button class="tab-btn" data-tab="takeaways-en-${idx}">Takeaways</button>
+                    <button class="tab-btn" data-tab="impact-en-${idx}">Why It Matters</button>
+                  </div>
+                  <div class="tabs-content" style="margin-top: 10px;">
+                    <div class="tabs-pane active" id="summary-en-${idx}">
+                      <p>${paper.summary}</p>
+                    </div>
+                    <div class="tabs-pane" id="takeaways-en-${idx}">
+                      <ul class="bullet-list">
+                        ${paper.takeaways.map(t => `<li>${t}</li>`).join('')}
+                      </ul>
+                    </div>
+                    <div class="tabs-pane" id="impact-en-${idx}">
+                      <p>${paper.impact}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Chinese Translation -->
+              <div class="card-column zh-col">
+                <div class="column-lang-tag">中文对照</div>
+                <a href="${paper.url}" target="_blank" class="paper-title-link">${paper.title_zh}</a>
+                
+                <div class="tldr-box">
+                  <strong>摘要提炼:</strong> ${paper.tldr_zh}
+                </div>
+
+                <div class="tabs-container">
+                  <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="summary-zh-${idx}">研究概述</button>
+                    <button class="tab-btn" data-tab="takeaways-zh-${idx}">核心要点</button>
+                    <button class="tab-btn" data-tab="impact-zh-${idx}">研究价值</button>
+                  </div>
+                  <div class="tabs-content" style="margin-top: 10px;">
+                    <div class="tabs-pane active" id="summary-zh-${idx}">
+                      <p>${paper.summary_zh}</p>
+                    </div>
+                    <div class="tabs-pane" id="takeaways-zh-${idx}">
+                      <ul class="bullet-list">
+                        ${paper.takeaways_zh.map(t => `<li>${t}</li>`).join('')}
+                      </ul>
+                    </div>
+                    <div class="tabs-pane" id="impact-zh-${idx}">
+                      <p>${paper.impact_zh}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action buttons footer -->
+            <div class="card-footer">
+              <a href="${paper.url}" target="_blank" class="read-btn">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Read Full Paper / 原文链接
+              </a>
+              <div class="action-icon-group">
+                <button class="icon-btn btn-bookmark" data-title="${paper.title}">
+                  <i class="${isBookmarked} fa-bookmark"></i>
+                </button>
+                <button class="icon-btn btn-share" data-title="${paper.title}" data-url="${paper.url}">
+                  <i class="fa-solid fa-share-nodes"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      // Wire up card tab switching
+      container.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.getAttribute('data-tab');
+          const column = btn.closest('.card-column');
+          
+          column.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          column.querySelectorAll('.tabs-pane').forEach(p => p.classList.remove('active'));
+          
+          btn.classList.add('active');
+          column.querySelector(`#${tabId}`).classList.add('active');
+        });
+      });
+
+      // Bookmark action listener
+      container.querySelectorAll('.btn-bookmark').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const title = btn.getAttribute('data-title');
+          const icon = btn.querySelector('i');
+          if (appState.bookmarked.has(title)) {
+            appState.bookmarked.delete(title);
+            icon.className = "fa-regular fa-bookmark";
+          } else {
+            appState.bookmarked.add(title);
+            icon.className = "fa-solid fa-bookmark";
+          }
+        });
+      });
+
+      // Share button listener
+      container.querySelectorAll('.btn-share').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const title = btn.getAttribute('data-title');
+          const url = btn.getAttribute('data-url');
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(`${title} - ${url}`);
+            alert(`Copied link to clipboard:\n${title}`);
+          }
+        });
+      });
+
+      // Update sidebar stats
+      updateStats(activeWeek, filteredPapers);
+    }
+
+    // Recalculate and draw Linguistics Insights View
+    function renderLinguisticDashboard() {
+      const activeWeek = PAPER_DATA.weeks.find(w => w.id === appState.activeWeekId);
+      if (!activeWeek) return;
+
+      document.getElementById("ling-overview-title").innerText = `📊 Linguistic Metrics for ${activeWeek.title.split(" (")[0]}`;
+
+      // 1. Terminology Word Cloud
+      const words = computeWordFrequencies(activeWeek);
+      // Wait for layout rendering, then draw
+      setTimeout(() => {
+        renderWordCloud('wordcloud-canvas', words);
+      }, 50);
+
+      // 2. Semantic Dimension Vectors (Radar Chart)
+      const dimensions = computeLinguisticDimensions(activeWeek);
+      setTimeout(() => {
+        renderRadarChart('radar-canvas', dimensions);
+      }, 50);
+
+      // 3. Sentiment Balance orientation
+      const sentiment = computeSentimentTone(activeWeek);
+      const slider = document.getElementById("sentiment-slider");
+      slider.style.width = `${sentiment.optimismPct}%`;
+      
+      document.getElementById("sentiment-cautious-pct").innerText = `Caution: ${sentiment.cautionPct}% (Lexical frequency: ${sentiment.cautious})`;
+      document.getElementById("sentiment-optimism-pct").innerText = `Optimism: ${sentiment.optimismPct}% (Lexical frequency: ${sentiment.positive})`;
+    }
+
+    // Update weekly metrics in sidebar
+    function updateStats(activeWeek, currentPapers) {
+      let gdmCount = 0;
+      let anthropicCount = 0;
+
+      activeWeek.papers.forEach(p => {
+        if (p.publisher.toLowerCase().includes('google')) gdmCount++;
+        if (p.publisher.toLowerCase().includes('anthropic')) anthropicCount++;
+      });
+
+      const total = gdmCount + anthropicCount || 1;
+      const gdmPct = (gdmCount / total) * 100;
+      const anthropicPct = (anthropicCount / total) * 100;
+
+      document.getElementById("stats-count-google").innerText = gdmCount;
+      document.getElementById("stats-count-anthropic").innerText = anthropicCount;
+      document.getElementById("stats-bar-google").style.width = `${gdmPct}%`;
+      document.getElementById("stats-bar-anthropic").style.width = `${anthropicPct}%`;
+    }
+
+    // Theme Toggle Logic
+    const themeBtn = document.getElementById("btn-theme-toggle");
+    themeBtn.addEventListener("click", () => {
+      appState.isLightMode = !appState.isLightMode;
+      document.body.classList.toggle("light-mode", appState.isLightMode);
+      
+      const icon = themeBtn.querySelector("i");
+      const span = themeBtn.querySelector("span");
+      
+      if (appState.isLightMode) {
+        icon.className = "fa-solid fa-sun";
+        span.innerText = "Light Mode";
+      } else {
+        icon.className = "fa-solid fa-moon";
+        span.innerText = "Dark Mode";
+      }
+
+      // Re-render canvases to adapt text colors to new theme backgrounds
+      if (appState.activeView === "linguistics") {
+        renderLinguisticDashboard();
+      }
+    });
+
+    // Mock chatbot logic
+    const assistantBtn = document.getElementById("assistant-trigger-btn");
+    const assistantPanel = document.getElementById("assistant-panel");
+    const closeAssistantBtn = document.getElementById("btn-close-assistant");
+    const chatInput = document.getElementById("chat-input-box");
+    const sendChatBtn = document.getElementById("btn-send-chat");
+    const chatBody = document.getElementById("chat-box-body");
+
+    assistantBtn.addEventListener("click", () => {
+      assistantPanel.classList.toggle("open");
+      if (assistantPanel.classList.contains("open")) {
+        chatInput.focus();
+      }
+    });
+
+    closeAssistantBtn.addEventListener("click", () => {
+      assistantPanel.classList.remove("open");
+    });
+
+    function appendMessage(sender, text) {
+      const msg = document.createElement("div");
+      msg.className = `chat-bubble ${sender}`;
+      msg.innerHTML = text;
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function handleChat() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      appendMessage("user", text);
+      chatInput.value = "";
+
+      const query = text.toLowerCase();
+      let reply = "I can only help explain papers from this week. Could you try asking about <strong>Jacobian Lens</strong>, <strong>GRAM</strong>, <strong>AlphaEvolve</strong>, or the <strong>AGI Safety Gate</strong>?";
+
+      if (query.includes("jacobian") || query.includes("j-lens") || query.includes("j-space") || query.includes("workspace")) {
+        reply = "The <strong>Jacobian Lens (J-lens)</strong> is a new technique from Anthropic that probes model activations. It identifies a 'J-space' inside Claude—a privileged workspace containing concepts that the model can explicitly reason with and report on, rather than processing them implicitly.";
+      } else if (query.includes("gram") || query.includes("modular")) {
+        reply = "<strong>GRAM (Gradient Routed Auxiliary Modules)</strong> is a pretraining framework. It isolates specific high-risk knowledge (like bioweapon or cyberattack info) into dedicated training modules. These modules can then be locked or disabled entirely without degrading Claude's general performance in coding or math.";
+      } else if (query.includes("alphaevolve") || query.includes("quantum")) {
+        reply = "<strong>AlphaEvolve</strong> is DeepMind's RL-evolutionary algorithm model. It has optimized TPU floorplans and Google Spanner databases. In physics, it discovered quantum circuits with 15% fewer error rates, showing AI can design its own hardware substrate.";
+      } else if (query.includes("agi") || query.includes("asi") || query.includes("superintelligence") || query.includes("safety gate")) {
+        reply = "DeepMind's <strong>From AGI to ASI</strong> paper outlines capability triggers. It defines safety thresholds mathematically based on agent autonomy and recursive self-improvement rates, recommending an 'ASI Safety Gate' protocol prior to deployment.";
+      } else if (query.includes("icml") || query.includes("routing")) {
+        reply = "At ICML 2026, DeepMind presented papers on <strong>Model Selection at Scale</strong>. They detail dynamic query-routing cascading algorithms that send queries to the smallest capable model, cutting server costs and latency by 40%.";
+      } else if (query.includes("predicting") || query.includes("past") || query.includes("ancient") || query.includes("ithaca")) {
+        reply = "The <strong>Predicting the Past</strong> paper details Gemini interacting with Ithaca (ancient text restoration) and Aeneas (dating model), enabling epigraphists to converse with specialized historical models and restore text with 78% accuracy.";
+      }
+
+      setTimeout(() => {
+        appendMessage("bot", reply);
+      }, 600);
+    }
+
+    sendChatBtn.addEventListener("click", handleChat);
+    chatInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") handleChat();
+    });
+
+    // Start App
+    window.addEventListener("DOMContentLoaded", () => {
+      renderWeekList();
+      setupFilters();
+      setupViewTabs();
+      renderFeed();
+    });
+  </script>
+</body>
+</html>
