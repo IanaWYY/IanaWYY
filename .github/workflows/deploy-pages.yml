@@ -1,0 +1,52 @@
+# Publish Aether AI Research Feed as a public GitHub Pages site.
+# Live URL after first enable: https://ianawyy.github.io/IanaWYY/
+name: Deploy AI Paper Digest to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "ai_paper_digest/**"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Stage static site (ai_paper_digest → site root)
+        run: |
+          mkdir -p _site
+          cp -R ai_paper_digest/* _site/
+          # Helpful root landing if someone hits /
+          if [ ! -f _site/index.html ]; then
+            echo "Missing ai_paper_digest/index.html" >&2
+            exit 1
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

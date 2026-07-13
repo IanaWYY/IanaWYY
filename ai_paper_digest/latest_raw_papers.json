@@ -1,142 +1,547 @@
-[
-  {
-    "title": "UniClawBench: A Universal Benchmark for Proactive Agents on Real-World Tasks",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Applications",
-    "url": "http://arxiv.org/abs/2607.08768v1",
-    "tldr": "The rapid development of large language models and multimodal large language models has accelerated the emergence of proactive agents capabl...",
-    "summary": "The rapid development of large language models and multimodal large language models has accelerated the emergence of proactive agents capable of operating everyday tools and assisting users in real-world environments. However, existing benchmarks struggle to evaluate such agents effectively, as they often rely on sandboxed environments and single-turn evaluation paradigms. Moreover, their scenario-based task taxonomies mix multiple model capabilities within the same task category, making it difficult to identify the root causes of agent failures. To address these limitations, we introduce UniClawBench, the first capability-driven benchmark designed to evaluate proactive agents in dynamic, real-world settings. UniClawBench is built around five foundational model capabilities: Skill Usage, Exploration, Long-Context Reasoning, Multimodal Understanding, and Cross-Platform Coordination. Based on these capabilities, we design 400 bilingual real-world tasks. Unlike previous benchmarks that rely on static, pre-recorded answers, our benchmark evaluates agents in live Docker containers using fine-grained, step-by-step completion checkpoints. Furthermore, we design a closed-loop evaluation strategy comprising an executor agent, a hidden supervisor agent, and a user agent to simulate realistic multi-turn human feedback without leaking grading criteria. To disentangle base model capabilities from framework-level design choices, we evaluate state-of-the-art models under multiple agent frameworks. Through comprehensive comparisons across both models and frameworks, we show how base model capabilities and agent framework designs jointly shape performance in real-world environments. To facilitate future research, we make our benchmark and code publicly available at https://github.com/HKU-MMLab/UniClawBench.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "OpenCoF: Learning to Reason Through Video Generation",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Model Architecture",
-    "url": "http://arxiv.org/abs/2607.08763v1",
-    "tldr": "Reasoning has become a core capability for large models, especially when reliable decisions require understanding logical consequences. Rece...",
-    "summary": "Reasoning has become a core capability for large models, especially when reliable decisions require understanding logical consequences. Recent video generation models offer a reasoning path distinct from previous Chain-of-Thought (CoT): reasoning can unfold through temporally connected frames, known as Chain-of-Frame (CoF) reasoning. However, existing video generators are primarily trained on general video corpora, still lacking diverse supervision and dedicated designs for CoF reasoning. To address this gap, we introduce OpenCoF, a framework comprising the OpenCoF-17K dataset, a reasoning video dataset spanning 11 task families, and Wan-CoF, a fine-tuned video model for studying whether diverse temporal supervision improves CoF behavior. Across four video reasoning benchmarks, Wan-CoF achieves considerable gains over the Wan2.2-I2V-A14B baseline. Building on this, we empirically explore more advanced designs for CoF capabilities, i.e., equipping the model with visual and textual reasoning tokens. This mechanism respectively captures low-level visual cues and high-level semantic priors for spatial and temporal reasoning. Through performance comparisons and attention analysis, we examine how these tokens contribute across model depth, denoising steps, space, and time. Our results suggest that stronger video reasoning requires both broad temporal supervision and explicit mechanisms for organizing intermediate reasoning state. We open-source the dataset, model, and code to facilitate future research on reasoning-oriented video generation.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "Ideas Have Genomes: Benchmarking Scientific Lineage Reasoning and Lineage-Grounded Idea Generation",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Safety & Alignment",
-    "url": "http://arxiv.org/abs/2607.08758v1",
-    "tldr": "Scientific ideas rarely start from a blank page. They inherit mechanisms, repair known limitations, and recombine pieces of earlier work, mu...",
-    "summary": "Scientific ideas rarely start from a blank page. They inherit mechanisms, repair known limitations, and recombine pieces of earlier work, much like biological genomes. Current benchmarks still say little about whether AI systems can follow this inheritance structure. We present IdeaGene-Bench (IG-Bench), a benchmark for scientific lineage reasoning and lineage-grounded idea generation. IG-Bench is organized around the IdeaGene framework: each paper or proposal is represented as a set of minimal, typed, evidence-grounded Idea Genome objects, and a GenomeDiff aligns these objects to record inheritance, mutation, loss, external import, and novel insertion under six operational evolutionary dynamics. The benchmark contains 1,961 golden lineage traces, 1,085 curated Idea Genome objects, and 920 pairwise GenomeDiff records across 10 scientific domains. It supports two evaluations. IG-Exam (42 task types, 1,029 instances) tests closed-form lineage reasoning across Idea Genome abstraction, inheritance tracing, evolutionary reasoning, and lineage verification. IG-Arena evaluates generation with a lineage-conditioned Population-Evolution Score(PES), asking whether a proposal can be inserted as a coherent descendant of a given lineage population: it should inherit the right Idea Genome objects, vary meaningfully from nearby work, and offer selection value for future research. Experiments on 14 LLM-based scientists expose a compositional bottleneck. The strongest system reaches only 27.3% exact accuracy on lineage reasoning, and structured lineage context reshuffles system rankings rather than helping every participant uniformly.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "Score Accuracy Along the Forward Diffusion Does Not Certify Numerical Stability in Diffusion Sampling",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Machine Learning",
-    "url": "http://arxiv.org/abs/2607.08757v1",
-    "tldr": "Score matching controls average error under the forward marginals, but a discretized reverse-time sampler evaluates the learned score along ...",
-    "summary": "Score matching controls average error under the forward marginals, but a discretized reverse-time sampler evaluates the learned score along its own trajectory. We show that small forward-marginal error does not guarantee numerical stability. We construct a single smooth score field with arbitrarily small forward-marginal $L^2$ error. The learned reverse-time process is nonexplosive, has moments of every order, and can be arbitrarily close to the exact reverse-time process in path-space total variation. Yet its Euler--Maruyama discretizations converge in probability while every positive moment diverges. Thus weak convergence can hold even though every Wasserstein distance $W_p$, $p\\ge1$, diverges.   The same failure can occur within one fixed finite neural architecture. We construct a family of bounded, globally Lipschitz denoisers for which both the forward-marginal error and the path-space total variation distance tend to zero, while their Euler--Maruyama endpoints diverge in every $W_p$. For compactly supported data, we also give a simple positive result. Projecting the learned denoiser onto a known bounded closed convex set containing the support preserves pointwise accuracy, gives grid-uniform moment bounds, and yields Wasserstein convergence under mild local regularity. Experiments with a small fixed DiT-style network show large growth along rare numerical trajectories and its suppression by denoiser projection, while overall trajectory errors remain small.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "MulTTiPop: A Multitrack Transcription Dataset for Pop Music",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Machine Learning",
-    "url": "http://arxiv.org/abs/2607.08756v1",
-    "tldr": "We present MulTTiPop, a dataset of pop music segments and their associated multitrack MIDI recordings for the evaluation of automatic music ...",
-    "summary": "We present MulTTiPop, a dataset of pop music segments and their associated multitrack MIDI recordings for the evaluation of automatic music transcription models. MulTTiPop contains 572 segments of popular music totaling 3.5 hours of audio, and contains songs from diverse genres and decades from the 1930s to 2000s. To collect this dataset, we perform metadata-based matching on song segments from the Lakh MIDI and TheoryTab datasets, manually identify an anchor beat between the audio and MIDI, then use beat tracking on the audio and warp the MIDI to match its tempo and timing. We evaluate state-of-the-art automatic music transcription models on MulTTiPop and find substantial room for improvement, with the best model achieving 38% Onset F1. More details and sound examples of MulTTiPop are available at https://gclef-cmu.org/multtipop.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "SLORR: Simple and Efficient In-Training Low-Rank Regularization",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Systems & Optimization",
-    "url": "http://arxiv.org/abs/2607.08754v1",
-    "tldr": "Low-rank factorization is widely used to compress neural networks, but modern models are often not naturally amenable to aggressive factoriz...",
-    "summary": "Low-rank factorization is widely used to compress neural networks, but modern models are often not naturally amenable to aggressive factorization without significant accuracy loss. Existing training-time low-rank regularizers can improve compressibility, but they often require SVDs of large weight matrices, modify the model architecture (introducing additional trainable parameters), or rely on stateful cached quantities. To address these limitations, we introduce SLORR, a simple, stateless, and architecture-preserving framework for in-training low-rank regularization, instantiated with two main variants based on the Hoyer sparsity metric and the nuclear norm. SLORR directly regularizes the original weight matrices using GPU-friendly approximations for the forward and backward passes of the regularizers, for which we provide approximation guarantees. We first evaluate SLORR on ImageNet-1K across short-horizon continued training of ResNet-50, ViT-B/16, and ViT-L/16, and pretraining of ResNet-18, where SLORR induces compressibility while introducing less than 8% training overhead. We further evaluate SLORR-Hoyer in LLM pretraining at 135M and 560M scales: SLORR-trained compressed models preserve performance substantially better than unregularized models while adding less than 1% average training overhead.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "Using AI-based Learning Assistants in Higher Education: A Large-Scale Descriptive Analysis",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Machine Learning",
-    "url": "http://arxiv.org/abs/2607.08748v1",
-    "tldr": "In this study, we present a large-scale descriptive analysis of the use of an AI-based learning assistant (Syntea) in higher education. Base...",
-    "summary": "In this study, we present a large-scale descriptive analysis of the use of an AI-based learning assistant (Syntea) in higher education. Based on objective log data from 77,543 students enrolled in distance studies, we examine usage patterns across gender, age group, study cluster, degree, and study mode. To date, existing research on educational chatbots has largely relied on comparatively small samples and self-reported survey data, while large-scale evidence on actual usage behavior remains limited. Our findings show that Syntea is already embedded in the study routines of many learners, but that usage differs across demographic and structural contexts. By identifying these patterns, our study provides an empirical basis for the further development of AI-based learning support and contributes a large-scale analysis of educational chatbot usage in higher education.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "Dimensionality Reduction Meets Network Science: Sensemaking on UMAP's kNN Graph",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Machine Learning",
-    "url": "http://arxiv.org/abs/2607.08746v1",
-    "tldr": "While UMAP is widely used for exploring high-dimensional data, typical workflows focus on its lower-dimensional embedding, largely overlooki...",
-    "summary": "While UMAP is widely used for exploring high-dimensional data, typical workflows focus on its lower-dimensional embedding, largely overlooking the rich k-nearest-neighbor (kNN) graph that UMAP constructs internally. This graph encodes the data manifold in its original high-dimensional space, before the distortion that UMAP's 2D projection introduces. We demonstrate the untapped potential of this internal representation, showing how standard graph algorithms applied to this graph enhance data sensemaking: (1) PageRank identifies representative data points, (2) k-core decomposition reveals dense core regions versus sparse periphery, and (3) clustering coefficient detects tight-knit neighborhoods with highly-similar data points. Through quantitative and qualitative evaluation on MNIST and Fashion MNIST, we show that these graph-based analyses are not only practical but also competitive with or complementary to purpose-built methods (e.g., k-medoids for exemplar selection, HDBSCAN for density-based clustering).",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "AUTOPILOT VQA: Benchmarking Vision-Language Models for Incident-Centric Dashcam Understanding",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Interpretability",
-    "url": "http://arxiv.org/abs/2607.08745v1",
-    "tldr": "Recent advances in Vision-Language Models, Large Language Models, and Multimodal Large Language Models have improved autonomous driving task...",
-    "summary": "Recent advances in Vision-Language Models, Large Language Models, and Multimodal Large Language Models have improved autonomous driving tasks such as scene understanding, decision making, trajectory prediction, and visual question answering. However, evaluating whether these models can reliably reason about safety-critical incidents remains challenging. To address this gap, we present AUTOPILOT-VQA, an incident-centric visual question answering benchmark for dashcam video understanding. The dataset evaluates different systems through structured questions designed around real-world driving incidents and near-incidents. The benchmark covers diverse safety-relevant categories, including weather and lighting conditions, traffic environment, road layout, road surface state, signage, involved entities, accident occurrence, impact location, and avoidability-related reasoning. By requiring models to answer grounded questions about both contextual scene properties and event-level incident details, AUTOPILOT-VQA moves beyond object recognition toward temporally grounded, safety-aware reasoning. The dataset is released as part of the AUTOPILOT CVPR 2026 competition and provides a standardized benchmark for assessing the reliability of autonomous driving systems in different scenarios. Our benchmark support developments for more interpretable, robust, and safety-conscious vision-language systems for real-world autonomous driving.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  },
-  {
-    "title": "ARDY: Autoregressive Diffusion with Hybrid Representation for Interactive Human Motion Generation",
-    "publisher": "arXiv Preprint",
-    "date": "July 09, 2026",
-    "category": "Model Architecture",
-    "url": "http://arxiv.org/abs/2607.08741v1",
-    "tldr": "Generating realistic 3D human motions in real-time within interactive applications is key for animation, simulation, and humanoid robotics. ...",
-    "summary": "Generating realistic 3D human motions in real-time within interactive applications is key for animation, simulation, and humanoid robotics. While recent offline motion generation approaches offer precise control via text and kinematic constraints, they lack the inference speed required for interactive settings. Conversely, existing online methods enable real-time synthesis but often sacrifice controllability or struggle with complex text semantics and long-horizon goals due to limited context windows. In this work, we introduce ARDY, a streaming generation framework that bridges this gap by enabling high-fidelity motion generation controllable via online text prompts and flexible kinematic constraints. ARDY employs a hybrid representation that combines explicit root features with a latent body embedding, balancing precise trajectory control with efficient generative learning. We propose a two-stage autoregressive transformer denoiser that features variable history context and supports conditioning on flexible, long-horizon kinematic constraints. By training on a large-scale motion capture dataset and being directly conditioned on text labels and kinematic constraints sampled from ground truth poses, ARDY natively learns controllable generation that supports online prompting and flexible long-horizon goals. Extensive evaluations on the HumanML3D benchmark and the large-scale, high-fidelity Bones Rigplay dataset demonstrate ARDY's high motion quality and constraint adherence, validating the efficacy of our key architectural decisions. Finally, we demonstrate the method's practical versatility through an interactive demo featuring dynamic text control, diverse keyframe pose constraints, path following, and interactive locomotion control via mouse and keyboard. Supplementary video results, code, and model releases can be found at https://research.nvidia.com/labs/sil/projects/ardy/.",
-    "takeaways": [
-      "Fetched dynamically from arXiv.",
-      "Review full abstract in details."
-    ],
-    "impact": "Preprint publication. Accelerates machine learning research open sharing."
-  }
-]
+{
+  "fetched_at": "2026-07-13T08:32:15.704642Z",
+  "papers": [
+    {
+      "type": "paper",
+      "title": "PHINN-EEG: Topological Time-Series Analysis of Dream-State EEG -- Dynamic Betti Curves for Dream Content Classification and Topology-Conditioned Neural Signal Synthesis",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09662",
+      "tldr": "Current electroencephalography (EEG)-based dream detection relies on power spectral density (PSD) and statistical moment features, achieving a state-of-the-art area under the recei…",
+      "summary": "Current electroencephalography (EEG)-based dream detection relies on power spectral density (PSD) and statistical moment features, achieving a state-of-the-art area under the receiver operating characteristic curve (AUC) of approximately 0.70 on the DREAM database (Wong et al., 2025, Nature Communications). We introduce PHINN-EEG (Persistent Homology Inspired Neural Network for EEG), the first topological time-series framework for dream mentation analysis. Using sliding-window Takens delay embeddings and Vietoris-Rips filtrations on multichannel pre-awakening EEG epochs, we extract Dynamic Bet…"
+    },
+    {
+      "type": "paper",
+      "title": "Scalable Visual Pretraining for Language Intelligence",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09657",
+      "tldr": "The rapid progress of large foundation models has been driven predominantly by pretraining on large-scale text corpora. However, many forms of knowledge are conveyed through visual…",
+      "summary": "The rapid progress of large foundation models has been driven predominantly by pretraining on large-scale text corpora. However, many forms of knowledge are conveyed through visual representations, where figures, typeset equations, and page layouts carry rich information that cannot be faithfully or completely captured by text alone. Yet current pretraining approaches discard these visual cues by converting visually rich sources, such as documents and web pages, into plain text for learning language intelligence. This paper challenges the default assumption that language models must be trained…"
+    },
+    {
+      "type": "paper",
+      "title": "Evolution of Accuracy and Visual-Cognitive Errors in a Decade of Vision-Language AI Models",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09654",
+      "tldr": "Vision language models (VLMs) have made remarkable progress in visual reasoning during the last decade. Most evaluations have used simple scenes (MS-COCO) that do not showcase comp…",
+      "summary": "Vision language models (VLMs) have made remarkable progress in visual reasoning during the last decade. Most evaluations have used simple scenes (MS-COCO) that do not showcase complex human interactions or behaviors, only a handful of non-curated human descriptions as a benchmark, and have not focused on understanding the model's error types. Here, we introduce the Complex Social Behavior (CSB) dataset, containing 100 images depicting complex social interactions/behaviors. We analyze the progression of scene descriptions over a decade (2017-2025) of VLMs (four pre-Multimodal Large Language Mod…"
+    },
+    {
+      "type": "paper",
+      "title": "VEXAIoT: Autonomous IoT Vulnerability EXploitation using AI Agents",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09653",
+      "tldr": "Internet of Things (IoT) systems are inherently vulnerable due to constrained hardware, outdated firmware, and insecure default configurations, creating a need for scalable and ada…",
+      "summary": "Internet of Things (IoT) systems are inherently vulnerable due to constrained hardware, outdated firmware, and insecure default configurations, creating a need for scalable and adaptive security testing approaches. While recent adoptions of Large Language Model (LLM) agents have demonstrated promise in penetration testing and Capture-the-Flag (CTF) environments, their application to IoT specific vulnerabilities remains unexplored. This paper presents an autonomous multi-agent framework, referred to as Vulnerability EXploitation using AI Agents (VEXAIoT), for vulnerability discovery and exploit…"
+    },
+    {
+      "type": "paper",
+      "title": "ConceptSMILE: Auditing the Trustworthiness of Concept-Based Explainable AI",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09649",
+      "tldr": "Concept-based explainable artificial intelligence (AI) can make model reasoning more human-understandable, but concept-level outputs are not automatically trustworthy. We introduce…",
+      "summary": "Concept-based explainable artificial intelligence (AI) can make model reasoning more human-understandable, but concept-level outputs are not automatically trustworthy. We introduce ConceptSMILE, a model-agnostic perturbation-based auditing framework for evaluating the reliability of concept-based explanations. Rather than replacing SMILE, ConceptSMILE extends its perturbation-based logic from feature- or region-level attribution to the auditing of human-understandable concept explanations. The framework perturbs input regions, measures concept-response shifts, applies locality weighting, and f…"
+    },
+    {
+      "type": "paper",
+      "title": "Deep Gaussian Processes on Directed Acyclic Graphs",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09645",
+      "tldr": "Many real-world processes can be represented as compositions of functions along a directed acyclic graph (DAG). In causal modelling, these correspond to the underlying mechanisms; …",
+      "summary": "Many real-world processes can be represented as compositions of functions along a directed acyclic graph (DAG). In causal modelling, these correspond to the underlying mechanisms; in engineering, to multiple fidelity levels; and in gene-regulatory networks, to transcription factors. These functions are partially observed across the DAG, with noisy and heterogeneously sampled measurements, posing significant challenges for reconstruction, uncertainty propagation, and inference. To tackle these challenges, we place priors over functions and naturally arrive at Deep Gaussian Processes over DAGs. …"
+    },
+    {
+      "type": "paper",
+      "title": "Semantic Pareto-DQN: A Multi-Objective Reinforcement Learning Framework for Financial Anomaly Detection",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09641",
+      "tldr": "Financial anomaly detection suffers from extreme class imbalance, causing traditional single-objective algorithms to exhibit ``fraud collapse'', defaulting to the majority class an…",
+      "summary": "Financial anomaly detection suffers from extreme class imbalance, causing traditional single-objective algorithms to exhibit ``fraud collapse'', defaulting to the majority class and failing to balance anomaly interdiction with customer friction. To overcome this without distortive data resampling, we propose the Semantic Pareto-DQN, a multi-objective reinforcement learning framework. Our approach synthesizes heterogeneous transaction features into cohesive natural-language narratives, encoded by large language models, thereby producing a robust, scale-invariant state representation. The agent …"
+    },
+    {
+      "type": "paper",
+      "title": "Lean-QIT: Towards a Formal Infrastructure for Quantum Information Theory",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09632",
+      "tldr": "Quantum information theory (QIT) characterizes the capabilities and fundamental limits of quantum information processing, underpinning quantum communication, computation, and error…",
+      "summary": "Quantum information theory (QIT) characterizes the capabilities and fundamental limits of quantum information processing, underpinning quantum communication, computation, and error correction. Formalizing its coding theorems requires connecting finite-block protocols, analytic inequalities, and asymptotic limits within a unified machine-checked framework. Existing developments, however, lack a reusable operational layer that defines codes, error criteria, achievable rates, and capacities independently of their information-theoretic characterizations. In this work, we present LeanQIT, a Lean 4 …"
+    },
+    {
+      "type": "paper",
+      "title": "4DR360: State Reasoning for Joint 3D Detection and Occupancy Prediction in 4D Radar-Camera Full-Scene Perception",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09629",
+      "tldr": "Reliable autonomous driving requires full-scene perception that couples foreground objects with dense semantic layout. Recently, 4D millimeter-wave radar has emerged as a robust an…",
+      "summary": "Reliable autonomous driving requires full-scene perception that couples foreground objects with dense semantic layout. Recently, 4D millimeter-wave radar has emerged as a robust and affordable sensor, yet its sparse returns make radar-camera fusion necessary for comprehensive scene understanding. Existing radar-camera methods mainly optimize detection, while dual-task systems usually decode boxes and occupancy with limited interaction. To address this gap and advance radar-based multi-task learning, we propose \\method, a 4D radar-camera framework for 360$^\\circ$ full-scene perception, which mo…"
+    },
+    {
+      "type": "paper",
+      "title": "Task-Specific Multimodal Question Answering Agents via Confidence Calibration and Incremental Reasoning for QANTA 2026",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09623",
+      "tldr": "We present our submission to the QANTA 2026 shared challenge at the ICML 2026 Workshop on Efficient Multimodal Question Answering (EMM-QA). Quanta evaluates multimodal quizbowl sys…",
+      "summary": "We present our submission to the QANTA 2026 shared challenge at the ICML 2026 Workshop on Efficient Multimodal Question Answering (EMM-QA). Quanta evaluates multimodal quizbowl systems that answer pyramid-style questions from incrementally revealed text and accompanying images while operating under realistic efficiency constraints. The challenge consists of two distinct tasks: Tossup questions, which require deciding when to answer under uncertainty, and Bonus questions, which emphasize accurate answer selection and human adoption. To address these differing objectives, we develop a task-speci…"
+    },
+    {
+      "type": "paper",
+      "title": "LLM for EDA in Front-End Design: Challenges and Opportunities",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09616",
+      "tldr": "As chip complexity increases and time-to-market pressures grow, front-end design has become a critical bottleneck in chip development. Recently, Large Language Models (LLMs) have s…",
+      "summary": "As chip complexity increases and time-to-market pressures grow, front-end design has become a critical bottleneck in chip development. Recently, Large Language Models (LLMs) have shown great potential in Electronic Design Automation (EDA). Beyond specification understanding, LLMs show the potential to serve as a unified intelligent interface for hardware description language (HDL) generation, testbench construction, and design space exploration. The rise of agentic AI, represented by pioneering systems such as OpenClaw, offers a strategic roadmap for the next generation EDA. From this perspect…"
+    },
+    {
+      "type": "paper",
+      "title": "Toward Real-Time Sentence-Level Sign Language Translation",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09611",
+      "tldr": "Most sign language understanding systems operate at the level of isolated signs, limiting their usefulness in natural communication. We study sentence-level sign language translati…",
+      "summary": "Most sign language understanding systems operate at the level of isolated signs, limiting their usefulness in natural communication. We study sentence-level sign language translation (SLT) with the primary goal of real-time deployment rather than proposing a new translation architecture. We fine-tune a SHuBERT-ByT5 translation stack on a uniformly sampled 9,872-example subset of How2Sign, selected because of compute and storage constraints, using QLoRA while keeping SHuBERT frozen. The model obtains a validation BLEU of 16.7 and, on the test split, BLEU 15.9 and BLEURT 44.7. The main contribut…"
+    },
+    {
+      "type": "paper",
+      "title": "Agora: Enhancing LLM Agent Reasoning Via Auction-Based Task Allocation",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09600",
+      "tldr": "Enhancing the reasoning capabilities of large language model (LLM) agents requires effective orchestration of diverse expert models and tools. However, existing frameworks typicall…",
+      "summary": "Enhancing the reasoning capabilities of large language model (LLM) agents requires effective orchestration of diverse expert models and tools. However, existing frameworks typically call APIs based on coarse-grained matching between tasks and the functions of expert models or tools, while overlooking critical factors such as performance variability and cost efficiency among functionally similar alternatives. To address this, we propose Agora, a framework that introduces an incentive-compatible auction mechanism for dynamically allocating tasks to expert models and tools. By treating reasoning …"
+    },
+    {
+      "type": "paper",
+      "title": "Tokenizer Transplantation: Mitigating Autoregressive Collapse in Edge-Efficient Bengali ASR",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09598",
+      "tldr": "Lightweight speech recognition models are critical for edge deployment, yet highly optimized architectures like Moonshine often fail on morphologically rich, non-Latin languages su…",
+      "summary": "Lightweight speech recognition models are critical for edge deployment, yet highly optimized architectures like Moonshine often fail on morphologically rich, non-Latin languages such as Bengali. This study identifies the root cause of this failure as the model's English-centric byte-level tokenizer, which fragments Bengali words into high-fertility byte chains and triggers catastrophic autoregressive collapse during inference. To resolve this, a novel vocabulary transplantation pipeline is proposed to replace the decoder vocabulary with the native-script BanglaBERT WordPiece vocabulary and res…"
+    },
+    {
+      "type": "paper",
+      "title": "PAC-ACT: Post-training Actor-Critic for Action Chunking Transformers",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09590",
+      "tldr": "Precision industrial contact manipulation requires reliable robot policies under pose perturbations and contact-force constraints. Vision-language-action models offer broad general…",
+      "summary": "Precision industrial contact manipulation requires reliable robot policies under pose perturbations and contact-force constraints. Vision-language-action models offer broad generalization but often introduce high inference latency and GPU-memory cost, while vision-action chunking policies are more suitable for real-time industrial control. However, these policies are usually trained by behavior cloning and suffer from distribution shift in contact-rich tasks. This paper proposes PAC-ACT, a reinforcement-learning post-training framework for pretrained Action Chunking Transformer policies. PAC-A…"
+    },
+    {
+      "type": "paper",
+      "title": "TrustX Agent Risk Classification Framework (ARC): Risk-Tiering Internally Created Agentic AI Systems",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09586",
+      "tldr": "The proliferation of agentic AI systems across enterprise and public-sector contexts has outpaced the capacity of general-purpose AI risk frameworks to classify and govern them. In…",
+      "summary": "The proliferation of agentic AI systems across enterprise and public-sector contexts has outpaced the capacity of general-purpose AI risk frameworks to classify and govern them. In this paper, we introduce the TrustX Agent Risk Classification Framework, a structured, repeatable instrument that can be applied to seven types of agentic AI systems and is grounded in foundational pre-existing AI governance frameworks. At the core of the framework is a twelve-dimension scoring rubric that robustly quantifies the risk. This rubric is combined with other components, such as the GPA + IAT classificati…"
+    },
+    {
+      "type": "paper",
+      "title": "Entropy-Constrained Machine Learning with Residual Data Augmentation for Modeling Chemical Kinetics",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09582",
+      "tldr": "We present a physics-constrained machine learning framework for accelerating the direct numerical simulation (DNS) of turbulent reacting flows. The model replaces the direct evalua…",
+      "summary": "We present a physics-constrained machine learning framework for accelerating the direct numerical simulation (DNS) of turbulent reacting flows. The model replaces the direct evaluation of detailed chemical source terms with a surrogate that predicts reaction rates from a reduced thermochemical state. To improve physical consistency, the second law of thermodynamics is incorporated as a training constraint by enforcing non-negative entropy generation, which restricts the evolution of the thermochemical state to physically admissible directions and improves stability during time integration. The…"
+    },
+    {
+      "type": "paper",
+      "title": "Knowledge Graphs and Explainable AI as Complementary Resources for Urban Mining",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09578",
+      "tldr": "Pre-demolition assessment, the regulated audit process at the heart of urban mining, is an information process in which AI support must serve qualified auditors who remain accounta…",
+      "summary": "Pre-demolition assessment, the regulated audit process at the heart of urban mining, is an information process in which AI support must serve qualified auditors who remain accountable for the decisions taken. The relevant unit of value is not prediction accuracy alone, but the defensibility of the supported decisions: their legibility, plausibility, sourcing, and contestability. Explainable AI techniques and domain knowledge graphs each address parts of this requirement, and existing taxonomies have catalogued their integration. The literature is descriptively rich but structurally under-speci…"
+    },
+    {
+      "type": "paper",
+      "title": "Conceptual Networks for Cross-Linguistic Idiomatic Expressions:A Feature-Based Graph Approach",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09576",
+      "tldr": "We present an interpretable network-based framework for representing idiomatic and figurative meaning across eight typologically diverse languages, totaling 160 conventional expres…",
+      "summary": "We present an interpretable network-based framework for representing idiomatic and figurative meaning across eight typologically diverse languages, totaling 160 conventional expressions, the large majority of which are idiomatic. Each expression is annotated with binary conceptual features (containment, concealment, emotional, social, etc.) derived from cognitive-linguistic theory, and pairwise Jaccard similarities define a weighted graph. Community detection reveals that idioms cluster by conceptual schema rather than by language, producing a structure consistent with cognitive-linguistic pre…"
+    },
+    {
+      "type": "paper",
+      "title": "Large-Scale Portfolio Optimization Problem Under Cardinality Constraint With Enhanced Multi-Objective Evolutionary Algorithms",
+      "publisher": "arXiv",
+      "date": "July 10, 2026",
+      "url": "https://arxiv.org/abs/2607.09566",
+      "tldr": "Decision-making is posing an increasingly formidable challenge to investors because of the growing number of alternatives available in financial markets. A hot area of research ove…",
+      "summary": "Decision-making is posing an increasingly formidable challenge to investors because of the growing number of alternatives available in financial markets. A hot area of research over the past few decades has been portfolio optimization that seeks to determine how much an investor should invest in which asset. Introducing real-world conditions to the optimization model turns the problem into an NP-hard one for whose solution exact methods become inefficient; hence, researchers have turned to evolutionary algorithms to approximate solutions. In this paper, strengthening strategies are presented f…"
+    }
+  ],
+  "blogs": [
+    {
+      "type": "blog",
+      "title": "Google DeepMind and A24 announce first-of-its-kind research partnership",
+      "publisher": "Google DeepMind",
+      "date": "July 03, 2026",
+      "url": "https://deepmind.google/blog/google-deepmind-and-a24-announce-first-of-its-kind-research-partnership/",
+      "tldr": "Google DeepMind and A24 announce first-of-its-kind research partnership",
+      "summary": "Google DeepMind and A24 announce first-of-its-kind research partnership"
+    },
+    {
+      "type": "blog",
+      "title": "Start building with Nano Banana 2 Lite and Gemini Omni Flash",
+      "publisher": "Google DeepMind",
+      "date": "June 30, 2026",
+      "url": "https://deepmind.google/blog/start-building-with-nano-banana-2-lite-and-gemini-omni-flash/",
+      "tldr": "Start building with Nano Banana 2 Lite and Gemini Omni Flash",
+      "summary": "Start building with Nano Banana 2 Lite and Gemini Omni Flash"
+    },
+    {
+      "type": "blog",
+      "title": "Introducing computer use in Gemini 3.5 Flash",
+      "publisher": "Google DeepMind",
+      "date": "June 24, 2026",
+      "url": "https://deepmind.google/blog/introducing-computer-use-in-gemini-3-5-flash/",
+      "tldr": "Introducing computer use in Gemini 3.5 Flash",
+      "summary": "Introducing computer use in Gemini 3.5 Flash"
+    },
+    {
+      "type": "blog",
+      "title": "Unlocking UK house-building with AI-accelerated planning",
+      "publisher": "Google DeepMind",
+      "date": "June 16, 2026",
+      "url": "https://deepmind.google/blog/unlocking-uk-house-building-with-ai-accelerated-planning/",
+      "tldr": "UK government partners with Google DeepMind to build a new AI-powered prototype aimed at faster housing decisions.",
+      "summary": "UK government partners with Google DeepMind to build a new AI-powered prototype aimed at faster housing decisions."
+    },
+    {
+      "type": "blog",
+      "title": "Securing the future of AI agents",
+      "publisher": "Google DeepMind",
+      "date": "June 16, 2026",
+      "url": "https://deepmind.google/blog/securing-the-future-of-ai-agents/",
+      "tldr": "Securing internal systems with an AI Control Roadmap, combining traditional safeguards and real-time monitoring.",
+      "summary": "Securing internal systems with an AI Control Roadmap, combining traditional safeguards and real-time monitoring."
+    },
+    {
+      "type": "blog",
+      "title": "Profiling in PyTorch (Part 3): Attention is all you profile",
+      "publisher": "Hugging Face",
+      "date": "July 10, 2026",
+      "url": "https://huggingface.co/blog/torch-attention-profile",
+      "tldr": "Profiling in PyTorch (Part 3): Attention is all you profile",
+      "summary": "Profiling in PyTorch (Part 3): Attention is all you profile"
+    },
+    {
+      "type": "blog",
+      "title": "Data for Agents",
+      "publisher": "Hugging Face",
+      "date": "July 08, 2026",
+      "url": "https://huggingface.co/blog/nvidia/open-data-for-agents",
+      "tldr": "Data for Agents",
+      "summary": "Data for Agents"
+    },
+    {
+      "type": "blog",
+      "title": "Native-speed vLLM transformers modeling backend",
+      "publisher": "Hugging Face",
+      "date": "July 08, 2026",
+      "url": "https://huggingface.co/blog/native-speed-vllm-transformers-backend",
+      "tldr": "Native-speed vLLM transformers modeling backend",
+      "summary": "Native-speed vLLM transformers modeling backend"
+    },
+    {
+      "type": "blog",
+      "title": "From Hugging Face to Amazon SageMaker Studio in one click",
+      "publisher": "Hugging Face",
+      "date": "July 07, 2026",
+      "url": "https://huggingface.co/blog/amazon/one-click-to-sagemaker-studio",
+      "tldr": "From Hugging Face to Amazon SageMaker Studio in one click",
+      "summary": "From Hugging Face to Amazon SageMaker Studio in one click"
+    },
+    {
+      "type": "blog",
+      "title": "Hugging Face Models on Foundry Managed Compute",
+      "publisher": "Hugging Face",
+      "date": "July 07, 2026",
+      "url": "https://huggingface.co/blog/microsoft/foundry-managed-compute",
+      "tldr": "Hugging Face Models on Foundry Managed Compute",
+      "summary": "Hugging Face Models on Foundry Managed Compute"
+    },
+    {
+      "type": "essay",
+      "title": "Harness Engineering for Self-Improvement",
+      "publisher": "Lil'Log",
+      "date": "July 04, 2026",
+      "url": "https://lilianweng.github.io/posts/2026-07-04-harness/",
+      "tldr": "The concept of recursive self-improvement (RSI) dates back to I. J. Good (1965) , where he defined an “ultraintelligent machine” as a system that can surpass humans in all intellec…",
+      "summary": "The concept of recursive self-improvement (RSI) dates back to I. J. Good (1965) , where he defined an “ultraintelligent machine” as a system that can surpass humans in all intellectual activities and design better machines to improve itself. Yudkowsky (2008) used the phrase “recursive self-improvement” for a specific feedback loop: an AI uses its current intelligence to improve the cognitive machinery that produces its intelligence. This feedback loop in modern AI may indicate the model rewriting its own weights directly, or more broadly the model improves the training pipeline and the deploym…"
+    },
+    {
+      "type": "essay",
+      "title": "Scaling Laws, Carefully",
+      "publisher": "Lil'Log",
+      "date": "June 24, 2026",
+      "url": "https://lilianweng.github.io/posts/2026-06-24-scaling-laws/",
+      "tldr": "Scaling laws are one of the most critical empirical findings in deep learning. The observation is simple in form: the training loss $L$ decreases predictably as we scale up model s…",
+      "summary": "Scaling laws are one of the most critical empirical findings in deep learning. The observation is simple in form: the training loss $L$ decreases predictably as we scale up model size $N$, dataset size $D$, and compute $C$, following a power-law curve, which appears as a straight line on a log-log plot. We can view scaling laws as a framework for describing the relationship between compute, loss, model size and data; at its core, it is about how to allocate precious compute optimally between $N$ and $D$."
+    },
+    {
+      "type": "essay",
+      "title": "Why We Think",
+      "publisher": "Lil'Log",
+      "date": "May 01, 2025",
+      "url": "https://lilianweng.github.io/posts/2025-05-01-thinking/",
+      "tldr": "Special thanks to John Schulman for a lot of super valuable feedback and direct edits on this post. Test time compute ( Graves et al. 2016 , Ling, et al. 2017 , Cobbe et al. 2021 )…",
+      "summary": "Special thanks to John Schulman for a lot of super valuable feedback and direct edits on this post. Test time compute ( Graves et al. 2016 , Ling, et al. 2017 , Cobbe et al. 2021 ) and Chain-of-thought (CoT) ( Wei et al. 2022 , Nye et al. 2021 ), have led to significant improvements in model performance, while raising many research questions. This post aims to review recent developments in how to effectively use test-time compute (i.e. “thinking time”) and why it helps."
+    },
+    {
+      "type": "essay",
+      "title": "Reward Hacking in Reinforcement Learning",
+      "publisher": "Lil'Log",
+      "date": "November 28, 2024",
+      "url": "https://lilianweng.github.io/posts/2024-11-28-reward-hacking/",
+      "tldr": "Reward hacking occurs when a reinforcement learning (RL) agent exploits flaws or ambiguities in the reward function to achieve high rewards, without genuinely learning or completin…",
+      "summary": "Reward hacking occurs when a reinforcement learning (RL) agent exploits flaws or ambiguities in the reward function to achieve high rewards, without genuinely learning or completing the intended task. Reward hacking exists because RL environments are often imperfect, and it is fundamentally challenging to accurately specify a reward function. With the rise of language models generalizing to a broad spectrum of tasks and RLHF becomes a de facto method for alignment training, reward hacking in RL training of language models has become a critical practical challenge. Instances where the model lea…"
+    },
+    {
+      "type": "essay",
+      "title": "Extrinsic Hallucinations in LLMs",
+      "publisher": "Lil'Log",
+      "date": "July 07, 2024",
+      "url": "https://lilianweng.github.io/posts/2024-07-07-hallucination/",
+      "tldr": "Hallucination in large language models usually refers to the model generating unfaithful, fabricated, inconsistent, or nonsensical content. As a term, hallucination has been somewh…",
+      "summary": "Hallucination in large language models usually refers to the model generating unfaithful, fabricated, inconsistent, or nonsensical content. As a term, hallucination has been somewhat generalized to cases when the model makes mistakes. Here, I would like to narrow down the problem of hallucination to cases where the model output is fabricated and not grounded by either the provided context or world knowledge. There are two types of hallucination: In-context hallucination: The model output should be consistent with the source content in context. Extrinsic hallucination: The model output should b…"
+    },
+    {
+      "type": "essay",
+      "title": "6 months to live for open models",
+      "publisher": "Interconnects",
+      "date": "July 12, 2026",
+      "url": "https://www.interconnects.ai/p/6-months-to-live-for-open-models",
+      "tldr": "The most serious test to date of open source AI’s viability is happening right now.",
+      "summary": "The most serious test to date of open source AI’s viability is happening right now."
+    },
+    {
+      "type": "essay",
+      "title": "Latest open artifacts (#22): Zyphra, Cohere, and Poolside are expanding the breadth of the ecosystem",
+      "publisher": "Interconnects",
+      "date": "June 28, 2026",
+      "url": "https://www.interconnects.ai/p/artifacts-22-zyphra-cohere-and-poolside",
+      "tldr": "An assessment of the open ecosystem and the motivations behind releasing models",
+      "summary": "An assessment of the open ecosystem and the motivations behind releasing models"
+    },
+    {
+      "type": "essay",
+      "title": "GLM-5.2 is the step change for open agents",
+      "publisher": "Interconnects",
+      "date": "June 22, 2026",
+      "url": "https://www.interconnects.ai/p/glm-52-is-the-step-change-for-open",
+      "tldr": "A capability threshold I've been carefully monitoring.",
+      "summary": "A capability threshold I've been carefully monitoring."
+    },
+    {
+      "type": "essay",
+      "title": "Banning Open Source AI Would Be A Mistake",
+      "publisher": "Interconnects",
+      "date": "June 19, 2026",
+      "url": "https://www.interconnects.ai/p/banning-open-source-ai-would-be-a",
+      "tldr": "This post was originally an op-ed co-authored with Kevin Xu of Interconnected for a general, non-technical audience.",
+      "summary": "This post was originally an op-ed co-authored with Kevin Xu of Interconnected for a general, non-technical audience."
+    },
+    {
+      "type": "essay",
+      "title": "State of the blog, mid-2026",
+      "publisher": "Interconnects",
+      "date": "June 17, 2026",
+      "url": "https://www.interconnects.ai/p/state-of-the-blog-mid-2026",
+      "tldr": "About 3 years since I started writing weekly.",
+      "summary": "About 3 years since I started writing weekly."
+    },
+    {
+      "type": "essay",
+      "title": "After Orthogonality: Virtue-Ethical Agency and AI Alignment",
+      "publisher": "The Gradient",
+      "date": "February 18, 2026",
+      "url": "https://thegradient.pub/virtue-ethics-ai-alignment/",
+      "tldr": "Preface This essay argues that rational people don’t have goals, and that rational AIs shouldn’t have goals. Human actions are rational not because we direct them at some final ‘go…",
+      "summary": "Preface This essay argues that rational people don’t have goals, and that rational AIs shouldn’t have goals. Human actions are rational not because we direct them at some final ‘goals,’ but because we align actions to practices [1] : networks of actions, action-dispositions, action-evaluation criteria,"
+    },
+    {
+      "type": "essay",
+      "title": "AGI Is Not Multimodal",
+      "publisher": "The Gradient",
+      "date": "June 04, 2025",
+      "url": "https://thegradient.pub/agi-is-not-multimodal/",
+      "tldr": "\"In projecting language back as the model for thought, we lose sight of the tacit embodied understanding that undergirds our intelligence.\" –Terry Winograd The recent successes of …",
+      "summary": "\"In projecting language back as the model for thought, we lose sight of the tacit embodied understanding that undergirds our intelligence.\" –Terry Winograd The recent successes of generative AI models have convinced some that AGI is imminent. While these models appear to capture the essence of human"
+    },
+    {
+      "type": "essay",
+      "title": "Shape, Symmetries, and Structure: The Changing Role of Mathematics in Machine Learning Research",
+      "publisher": "The Gradient",
+      "date": "November 16, 2024",
+      "url": "https://thegradient.pub/shape-symmetry-structure/",
+      "tldr": "What is the Role of Mathematics in Modern Machine Learning? The past decade has witnessed a shift in how progress is made in machine learning. Research involving carefully designed…",
+      "summary": "What is the Role of Mathematics in Modern Machine Learning? The past decade has witnessed a shift in how progress is made in machine learning. Research involving carefully designed and mathematically principled architectures result in only marginal improvements while compute-intensive and engineering-first efforts that scale to ever larger training sets"
+    },
+    {
+      "type": "essay",
+      "title": "What's Missing From LLM Chatbots: A Sense of Purpose",
+      "publisher": "The Gradient",
+      "date": "September 09, 2024",
+      "url": "https://thegradient.pub/dialog/",
+      "tldr": "LLM-based chatbots’ capabilities have been advancing every month. These improvements are mostly measured by benchmarks like MMLU, HumanEval, and MATH (e.g. sonnet 3.5, gpt-4o). How…",
+      "summary": "LLM-based chatbots’ capabilities have been advancing every month. These improvements are mostly measured by benchmarks like MMLU, HumanEval, and MATH (e.g. sonnet 3.5, gpt-4o). However, as these measures get more and more saturated, is user experience increasing in proportion to these scores? If we envision a future"
+    },
+    {
+      "type": "essay",
+      "title": "We Need Positive Visions for AI Grounded in Wellbeing",
+      "publisher": "The Gradient",
+      "date": "August 03, 2024",
+      "url": "https://thegradient.pub/we-need-positive-visions-for-ai-grounded-in-wellbeing/",
+      "tldr": "Introduction Imagine yourself a decade ago, jumping directly into the present shock of conversing naturally with an encyclopedic AI that crafts images, writes code, and debates phi…",
+      "summary": "Introduction Imagine yourself a decade ago, jumping directly into the present shock of conversing naturally with an encyclopedic AI that crafts images, writes code, and debates philosophy. Won’t this technology almost certainly transform society — and hasn’t AI’s impact on us so far been"
+    },
+    {
+      "type": "blog",
+      "title": "Intelligence is Free, Now What? Data Systems for, of, and by Agents",
+      "publisher": "Berkeley BAIR",
+      "date": "July 07, 2026",
+      "url": "http://bair.berkeley.edu/blog/2026/07/07/intelligence-is-free-now-what/",
+      "tldr": "... government of the people, by the people, for the people ... — Abraham Lincoln, Gettysburg Address (1863) The cost of AI is dropping rapidly. GPT-4-class capabilities cost rough…",
+      "summary": "... government of the people, by the people, for the people ... — Abraham Lincoln, Gettysburg Address (1863) The cost of AI is dropping rapidly. GPT-4-class capabilities cost roughly $30 per million tokens in early 2023; today the same runs under $1 , and some providers are pushing costs below $0.10 . Across benchmarks, inference prices have fallen between 9x and 900x per year , with a median decline near 50x. Even frontier models are getting dramatically cheaper each generation, with open-source models following closely behind. And crucially, even if “Nobel-Prize-winning genius-level” intelli…"
+    },
+    {
+      "type": "blog",
+      "title": "2026 BAIR Graduate Showcase",
+      "publisher": "Berkeley BAIR",
+      "date": "July 01, 2026",
+      "url": "http://bair.berkeley.edu/blog/2026/07/01/grads-2026/",
+      "tldr": "Congratulations to the Berkeley Artificial Intelligence Research (BAIR) Lab class of 2026! This year, BAIR celebrates another remarkable group of Ph.D. graduates whose curiosity, c…",
+      "summary": "Congratulations to the Berkeley Artificial Intelligence Research (BAIR) Lab class of 2026! This year, BAIR celebrates another remarkable group of Ph.D. graduates whose curiosity, creativity, and perseverance have pushed the frontiers of artificial intelligence and machine learning. Their work spans the breadth of modern AI — robotics and embodied intelligence, large language models and reasoning, computer vision, generative modeling, AI safety, human-AI interaction, AI for science and healthcare, and much more. Along the way, they have published influential research, built systems with real-wo…"
+    },
+    {
+      "type": "blog",
+      "title": "Adaptive Parallel Reasoning: The Next Paradigm in Efficient Inference Scaling",
+      "publisher": "Berkeley BAIR",
+      "date": "May 08, 2026",
+      "url": "http://bair.berkeley.edu/blog/2026/05/08/adaptive-parallel-reasoning/",
+      "tldr": ".apr-fig { text-align: center; margin: 1.35em 0; line-height: 1.4; } .apr-fig--wide img { display: inline-block; width: 100%; max-width: 100%; height: auto; vertical-align: middle;…",
+      "summary": ".apr-fig { text-align: center; margin: 1.35em 0; line-height: 1.4; } .apr-fig--wide img { display: inline-block; width: 100%; max-width: 100%; height: auto; vertical-align: middle; } .apr-fig--wide-0-8 { max-width: 80%; margin-left: auto; margin-right: auto; } .apr-fig--tall img { display: inline-block; max-height: 300px; width: auto; max-width: 100%; height: auto; object-fit: contain; vertical-align: middle; } .apr-fig--tall-1-2x img { display: inline-block; max-height: 360px; width: auto; max-width: 100%; height: auto; object-fit: contain; vertical-align: middle; } .apr-fig--tall-1-5x img { …"
+    },
+    {
+      "type": "blog",
+      "title": "Gradient-based Planning for World Models at Longer Horizons",
+      "publisher": "Berkeley BAIR",
+      "date": "April 20, 2026",
+      "url": "http://bair.berkeley.edu/blog/2026/04/20/grasp/",
+      "tldr": ".grasp-results-table table { font-size: 0.875rem; line-height: 1.35; width: 100%; } .grasp-results-table th, .grasp-results-table td { padding: 0.35rem 0.5rem; } /* Consistent whit…",
+      "summary": ".grasp-results-table table { font-size: 0.875rem; line-height: 1.35; width: 100%; } .grasp-results-table th, .grasp-results-table td { padding: 0.35rem 0.5rem; } /* Consistent whitespace between major sections (this post is long and hr-heavy) */ article.post-content h2 { margin-top: 2.75rem; margin-bottom: 0.75rem; } article.post-content h2:first-of-type { margin-top: 2.25rem; } article.post-content h3 { margin-top: 1.65rem; margin-bottom: 0.5rem; } article.post-content hr { margin-top: 2.5rem; margin-bottom: 2.5rem; } GRASP is a new gradient-based planner for learned dynamics (a “world model”…"
+    },
+    {
+      "type": "blog",
+      "title": "Identifying Interactions at Scale for LLMs",
+      "publisher": "Berkeley BAIR",
+      "date": "March 13, 2026",
+      "url": "http://bair.berkeley.edu/blog/2026/03/13/spex/",
+      "tldr": "--> Understanding the behavior of complex machine learning systems, particularly Large Language Models (LLMs), is a critical challenge in modern artificial intelligence. Interpreta…",
+      "summary": "--> Understanding the behavior of complex machine learning systems, particularly Large Language Models (LLMs), is a critical challenge in modern artificial intelligence. Interpretability research aims to make the decision-making process more transparent to model builders and impacted humans, a step toward safer and more trustworthy AI. To gain a comprehensive understanding, we can analyze these systems through different lenses: feature attribution , which isolates the specific input features driving a prediction ( Lundberg & Lee, 2017 ; Ribeiro et al., 2022 ); data attribution , which links mo…"
+    },
+    {
+      "type": "blog",
+      "title": "Fine-tune NVIDIA Nemotron 3 models with Amazon SageMaker AI serverless model customization",
+      "publisher": "AWS ML",
+      "date": "July 10, 2026",
+      "url": "https://aws.amazon.com/blogs/machine-learning/fine-tune-nvidia-nemotron-3-models-with-amazon-sagemaker-ai-serverless-model-customization/",
+      "tldr": "In this post, we explore what makes the Nemotron 3 architecture unique, walk through the fine-tuning techniques available, and show you step-by-step how to get started with serverl…",
+      "summary": "In this post, we explore what makes the Nemotron 3 architecture unique, walk through the fine-tuning techniques available, and show you step-by-step how to get started with serverless customization using SageMaker Studio."
+    },
+    {
+      "type": "blog",
+      "title": "Real-time dental image verification with Amazon SageMaker AI at Henry Schein One",
+      "publisher": "AWS ML",
+      "date": "July 10, 2026",
+      "url": "https://aws.amazon.com/blogs/machine-learning/real-time-dental-image-verification-with-amazon-sagemaker-ai-at-henry-schein-one/",
+      "tldr": "This post describes how Henry Schein One closed that gap by building Image Verify, an AI-powered quality verification system on Amazon SageMaker AI that evaluates dental X-ray qual…",
+      "summary": "This post describes how Henry Schein One closed that gap by building Image Verify, an AI-powered quality verification system on Amazon SageMaker AI that evaluates dental X-ray quality at the point of capture, in real time, across thousands of locations. The system went from concept to over 10,000 active locations within months and has already processed over 11 million X-rays and growing at 1.5 million per week. Henry Schein One is now scaling toward 40,000 locations globally across four regions."
+    },
+    {
+      "type": "blog",
+      "title": "Build a semantic layer for agentic AI on AWS with Stardog and Amazon Bedrock AgentCore",
+      "publisher": "AWS ML",
+      "date": "July 10, 2026",
+      "url": "https://aws.amazon.com/blogs/machine-learning/build-a-semantic-layer-for-agentic-ai-on-aws-with-stardog-and-amazon-bedrock-agentcore/",
+      "tldr": "In this post we show how to build a semantic layer on AWS using Stardog’s Semantic AI Application over Amazon Aurora and Amazon Redshift, and how to run a Strands Agents agent on A…",
+      "summary": "In this post we show how to build a semantic layer on AWS using Stardog’s Semantic AI Application over Amazon Aurora and Amazon Redshift, and how to run a Strands Agents agent on Amazon Bedrock AgentCore that queries the layer to answer customer 360 questions across both sources without extract, transform, and load (ETL). The same Stardog deployment works behind AWS computes (Amazon Elastic Kubernetes Service (Amazon EKS), Amazon Elastic Container Service (Amazon ECS), and AWS Lambda). We use AgentCore here because it bundles inbound auth, hosting, and tool credentials into one managed service…"
+    },
+    {
+      "type": "blog",
+      "title": "Scaling agentic workflows with native case management in Amazon Quick Automate",
+      "publisher": "AWS ML",
+      "date": "July 10, 2026",
+      "url": "https://aws.amazon.com/blogs/machine-learning/scaling-agentic-workflows-with-native-case-management-in-amazon-quick-automate/",
+      "tldr": "In this post, we show you how to combine case management with agentic automation capabilities in Quick Automate. We introduce case management and explore the lifecycle of cases in …",
+      "summary": "In this post, we show you how to combine case management with agentic automation capabilities in Quick Automate. We introduce case management and explore the lifecycle of cases in an agentic workflow from case creation through processing to resolution. We cover how to create and manage single or multiple cases, automatically track and update status, handle exceptions, and incorporate Human-in-the-loop (HITL) steps within workflows. We also show the case creator-processor pattern that enables dynamic scaling. Finally, we walk through how to structure case management for enterprise processes, in…"
+    },
+    {
+      "type": "blog",
+      "title": "Deploying quantized models on Amazon SageMaker AI with Unsloth",
+      "publisher": "AWS ML",
+      "date": "July 10, 2026",
+      "url": "https://aws.amazon.com/blogs/machine-learning/deploying-quantized-models-on-amazon-sagemaker-ai-with-unsloth/",
+      "tldr": "In this post, you will learn four deployment patterns for taking models that have already been quantized with Unsloth and deploying them on AWS infrastructure. The patterns use Ama…",
+      "summary": "In this post, you will learn four deployment patterns for taking models that have already been quantized with Unsloth and deploying them on AWS infrastructure. The patterns use Amazon Elastic Compute Cloud (Amazon EC2) for direct instance access, Amazon SageMaker AI inference endpoints for managed serving, and Amazon Elastic Kubernetes Service (Amazon EKS) or Amazon Elastic Container Service (Amazon ECS) when inference needs to fit into an existing container framework. You also learn operational practices for production deployments."
+    },
+    {
+      "type": "blog",
+      "title": "Aurora 1.5: Extending open foundation models for weather and Earth-system applications",
+      "publisher": "Microsoft Research",
+      "date": "July 09, 2026",
+      "url": "https://www.microsoft.com/en-us/research/blog/aurora-1-5-extending-open-foundation-models-for-weather-and-earth-system-applications/",
+      "tldr": "Aurora 1.5 adds 22 more variables, hourly temporal resolution, and probabilistic ensemble forecasting to the Aurora foundation model, making it more useful for real-world weather, …",
+      "summary": "Aurora 1.5 adds 22 more variables, hourly temporal resolution, and probabilistic ensemble forecasting to the Aurora foundation model, making it more useful for real-world weather, climate, and energy applications. The post Aurora 1.5: Extending open foundation models for weather and Earth-system applications appeared first on Microsoft Research ."
+    },
+    {
+      "type": "blog",
+      "title": "Flint: A visualization language for the AI era",
+      "publisher": "Microsoft Research",
+      "date": "July 08, 2026",
+      "url": "https://www.microsoft.com/en-us/research/blog/flint-a-visualization-language-for-the-ai-era/",
+      "tldr": "Short chart specifications are easy to write, but often produce uninspiring results. Flint is an open-source visualization language that offers a middle path, letting AI agents cre…",
+      "summary": "Short chart specifications are easy to write, but often produce uninspiring results. Flint is an open-source visualization language that offers a middle path, letting AI agents create expressive charts from compact, human-editable specifications. The post Flint: A visualization language for the AI era appeared first on Microsoft Research ."
+    },
+    {
+      "type": "blog",
+      "title": "SkillOpt: Agent skills as trainable parameters",
+      "publisher": "Microsoft Research",
+      "date": "June 30, 2026",
+      "url": "https://www.microsoft.com/en-us/research/blog/skillopt-agent-skills-as-trainable-parameters/",
+      "tldr": "AI agents often fail because their instructions, or skills, are manually modified with no guarantee of improvement. Learn how SkillOpt turns skill editing into a training process, …",
+      "summary": "AI agents often fail because their instructions, or skills, are manually modified with no guarantee of improvement. Learn how SkillOpt turns skill editing into a training process, making agent behavior more reliable without changing model weights. The post SkillOpt: Agent skills as trainable parameters appeared first on Microsoft Research ."
+    },
+    {
+      "type": "blog",
+      "title": "Memora: A Harmonic Memory Representation Balancing Abstraction and Specificity",
+      "publisher": "Microsoft Research",
+      "date": "June 29, 2026",
+      "url": "https://www.microsoft.com/en-us/research/blog/memora-a-harmonic-memory-representation-balancing-abstraction-and-specificity/",
+      "tldr": "AI agents can't remember past conversations. They must constantly reload or retrieve context, which grows less efficient as tasks get longer and more complex. Memora solves this wi…",
+      "summary": "AI agents can't remember past conversations. They must constantly reload or retrieve context, which grows less efficient as tasks get longer and more complex. Memora solves this with a scalable memory system separating what’s stored from how it's retrieved. The post Memora: A Harmonic Memory Representation Balancing Abstraction and Specificity appeared first on Microsoft Research ."
+    },
+    {
+      "type": "blog",
+      "title": "Understanding the brain with AI-driven explanations and experiments",
+      "publisher": "Microsoft Research",
+      "date": "June 25, 2026",
+      "url": "https://www.microsoft.com/en-us/research/blog/understanding-the-brain-with-ai-driven-explanations-and-experiments/",
+      "tldr": "Researchers introduce generative causal testing, which translates black box models into clear hypotheses and verifies them in the scanner, revealing what specific brain regions res…",
+      "summary": "Researchers introduce generative causal testing, which translates black box models into clear hypotheses and verifies them in the scanner, revealing what specific brain regions respond to in language. The post Understanding the brain with AI-driven explanations and experiments appeared first on Microsoft Research ."
+    }
+  ]
+}

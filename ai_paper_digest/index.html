@@ -40,15 +40,18 @@
       <div>
         <h3 class="sidebar-section-title">🏢 Publisher</h3>
         <div class="filter-group" id="publisher-filters">
-          <div class="checkbox-btn active" data-filter="publisher" data-value="Google DeepMind">
-            <span class="dot dot-google"></span> Google DeepMind
-          </div>
-          <div class="checkbox-btn active" data-filter="publisher" data-value="Anthropic">
-            <span class="dot dot-anthropic"></span> Anthropic
-          </div>
-          <div class="checkbox-btn active" data-filter="publisher" data-value="OpenAI">
-            <span class="dot dot-openai"></span> OpenAI
-          </div>
+          <!-- filled by JS from PAPER_DATA -->
+        </div>
+      </div>
+
+      <hr class="sidebar-divider">
+
+      <div>
+        <h3 class="sidebar-section-title">📄 Type</h3>
+        <div class="filter-group" id="type-filters">
+          <div class="checkbox-btn active" data-filter="type" data-value="paper">Paper</div>
+          <div class="checkbox-btn active" data-filter="type" data-value="blog">Blog</div>
+          <div class="checkbox-btn active" data-filter="type" data-value="essay">Essay</div>
         </div>
       </div>
 
@@ -66,19 +69,9 @@
       </div>
 
       <div class="stats-widget">
-        <h3 class="sidebar-section-title" style="margin-bottom: 8px;">📊 Week Stats</h3>
-        <div class="stats-widget-row">
-          <span style="font-size:11px;">Google DeepMind</span>
-          <strong id="stats-count-google">0</strong>
-        </div>
-        <div class="stats-widget-row">
-          <span style="font-size:11px;">Anthropic</span>
-          <strong id="stats-count-anthropic">0</strong>
-        </div>
-        <div class="stats-widget-bar-outer">
-          <div id="stats-bar-google" class="stats-widget-bar-inner" style="background-color: var(--accent-blue); width: 50%;"></div>
-          <div id="stats-bar-anthropic" class="stats-widget-bar-inner" style="background-color: var(--accent-orange); width: 50%;"></div>
-        </div>
+        <h3 class="sidebar-section-title" style="margin-bottom: 8px;">📊 Day Stats</h3>
+        <div id="stats-rows"></div>
+        <div class="stats-widget-bar-outer" id="stats-bar-outer"></div>
       </div>
     </div>
 
@@ -86,7 +79,10 @@
       <button class="theme-toggle-btn" id="btn-theme-toggle">
         <i class="fa-solid fa-moon"></i> <span>Dark Mode</span>
       </button>
-      <span style="font-size: 10px; color: var(--text-secondary);">v2.0</span>
+      <a class="public-link" id="public-site-link" href="#" target="_blank" rel="noopener" title="Share this public feed">
+        <i class="fa-solid fa-globe"></i> Public site
+      </a>
+      <span style="font-size: 10px; color: var(--text-secondary);">v2.1 · daily 20</span>
     </div>
   </aside>
 
@@ -110,7 +106,16 @@
       </div>
 
       <div class="swipe-stage">
-        <div class="swipe-progress" id="swipe-progress">0 / 0 remaining</div>
+        <div class="flip-counter" id="flip-counter" aria-live="polite">
+          <div class="flip-board" id="flip-board" title="Remaining to review">
+            <div class="flip-digit" data-place="tens"><span class="flip-face">0</span></div>
+            <div class="flip-digit" data-place="ones"><span class="flip-face">0</span></div>
+          </div>
+          <div class="flip-meta">
+            <span class="flip-label" id="flip-label">remaining</span>
+            <span class="flip-sub" id="swipe-progress">0 reviewed</span>
+          </div>
+        </div>
 
         <div class="swipe-deck" id="swipe-deck">
           <!-- Cards rendered by JS -->
@@ -169,18 +174,44 @@
   <script src="data.js"></script>
   <script>
     const STORAGE_KEY = "aether_paper_state_v2";
+    const ALL_CATEGORIES = [
+      "Interpretability",
+      "Safety & Alignment",
+      "Model Architecture",
+      "Systems & Optimization",
+      "Applications"
+    ];
+    const ALL_TYPES = ["paper", "blog", "essay"];
+    const PUBLISHER_DOT = {
+      "Google DeepMind": "dot-google",
+      "Anthropic": "dot-anthropic",
+      "OpenAI": "dot-openai",
+      "arXiv": "dot-arxiv",
+      "Hugging Face": "dot-hf",
+      "Lil'Log": "dot-essay",
+      "Interconnects": "dot-essay",
+      "The Gradient": "dot-essay",
+      "Berkeley BAIR": "dot-bair",
+      "AWS ML": "dot-aws",
+      "Microsoft Research": "dot-ms"
+    };
+
+    function allPublishers() {
+      const set = new Set();
+      (PAPER_DATA.weeks || []).forEach(w => (w.papers || []).forEach(p => set.add(p.publisher)));
+      return Array.from(set).sort((a, b) => a.localeCompare(b));
+    }
+
+    function defaultWeekId() {
+      return (PAPER_DATA.weeks && PAPER_DATA.weeks[0] && PAPER_DATA.weeks[0].id) || "";
+    }
 
     const appState = {
       activeView: "browse",
-      activeWeekId: "week-28",
-      selectedPublishers: ["Google DeepMind", "Anthropic", "OpenAI"],
-      selectedCategories: [
-        "Interpretability",
-        "Safety & Alignment",
-        "Model Architecture",
-        "Systems & Optimization",
-        "Applications"
-      ],
+      activeWeekId: defaultWeekId(),
+      selectedPublishers: allPublishers(),
+      selectedCategories: ALL_CATEGORIES.slice(),
+      selectedTypes: ALL_TYPES.slice(),
       searchQuery: "",
       isLightMode: false,
       // paperKey -> { status: 'saved'|'passed', note: string }
@@ -188,7 +219,8 @@
       // for current deck
       deck: [],
       deckIndex: 0,
-      history: [] // { key, prevStatus } for undo
+      history: [], // { key, prevStatus } for undo
+      displayedRemaining: null
     };
 
     function paperKey(paper) {
@@ -271,12 +303,13 @@
 
     function renderWeekList() {
       const container = document.getElementById("week-list-container");
-      container.innerHTML = PAPER_DATA.weeks.map(week => {
+      container.innerHTML = PAPER_DATA.weeks.map((week, idx) => {
         const isActive = week.id === appState.activeWeekId ? "active" : "";
-        const label = week.id === "week-28" ? "🔥 " : "";
+        const label = idx === 0 ? "🔥 " : "";
+        const shortTitle = week.title.split(" (")[0];
         return `
           <li class="week-item ${isActive}" data-id="${week.id}">
-            <span class="week-item-title">${label}${week.title.split(" (")[0]}</span>
+            <span class="week-item-title">${label}${shortTitle}</span>
             <span class="week-item-badge">${week.papers.length}</span>
           </li>
         `;
@@ -285,6 +318,7 @@
       container.querySelectorAll(".week-item").forEach(item => {
         item.addEventListener("click", () => {
           appState.activeWeekId = item.getAttribute("data-id");
+          appState.displayedRemaining = null;
           renderWeekList();
           if (appState.activeView === "browse") {
             rebuildDeck();
@@ -294,41 +328,48 @@
       });
     }
 
-    function setupFilters() {
-      document.querySelectorAll("#publisher-filters .checkbox-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const val = btn.getAttribute("data-value");
-          btn.classList.toggle("active");
-          if (appState.selectedPublishers.includes(val)) {
-            appState.selectedPublishers = appState.selectedPublishers.filter(p => p !== val);
-          } else {
-            appState.selectedPublishers.push(val);
-          }
-          if (appState.activeView === "browse") {
-            rebuildDeck();
-            renderSwipeCard();
-          }
-        });
-      });
+    function renderPublisherFilters() {
+      const container = document.getElementById("publisher-filters");
+      const pubs = allPublishers();
+      appState.selectedPublishers = pubs.slice();
+      container.innerHTML = pubs.map(pub => {
+        const dot = PUBLISHER_DOT[pub] || "dot-arxiv";
+        return `
+          <div class="checkbox-btn active" data-filter="publisher" data-value="${escapeHtml(pub)}">
+            <span class="dot ${dot}"></span> ${escapeHtml(pub)}
+          </div>
+        `;
+      }).join("");
+    }
 
-      document.querySelectorAll("#category-filters .checkbox-btn").forEach(btn => {
+    function wireFilterGroup(selector, stateKey) {
+      document.querySelectorAll(selector).forEach(btn => {
         btn.addEventListener("click", () => {
           const val = btn.getAttribute("data-value");
           btn.classList.toggle("active");
-          if (appState.selectedCategories.includes(val)) {
-            appState.selectedCategories = appState.selectedCategories.filter(c => c !== val);
+          if (appState[stateKey].includes(val)) {
+            appState[stateKey] = appState[stateKey].filter(x => x !== val);
           } else {
-            appState.selectedCategories.push(val);
+            appState[stateKey].push(val);
           }
+          appState.displayedRemaining = null;
           if (appState.activeView === "browse") {
             rebuildDeck();
             renderSwipeCard();
           }
         });
       });
+    }
+
+    function setupFilters() {
+      renderPublisherFilters();
+      wireFilterGroup("#publisher-filters .checkbox-btn", "selectedPublishers");
+      wireFilterGroup("#category-filters .checkbox-btn", "selectedCategories");
+      wireFilterGroup("#type-filters .checkbox-btn", "selectedTypes");
 
       document.getElementById("search-input").addEventListener("input", e => {
         appState.searchQuery = e.target.value.toLowerCase().trim();
+        appState.displayedRemaining = null;
         if (appState.activeView === "browse") {
           rebuildDeck();
           renderSwipeCard();
@@ -338,6 +379,10 @@
       });
     }
 
+    function contentTypeOf(paper) {
+      return paper.content_type || paper.type || "paper";
+    }
+
     function getFilteredPapers(includeDecided = false) {
       const activeWeek = PAPER_DATA.weeks.find(w => w.id === appState.activeWeekId);
       if (!activeWeek) return [];
@@ -345,9 +390,10 @@
       return activeWeek.papers.filter(paper => {
         const matchesPublisher = appState.selectedPublishers.includes(paper.publisher);
         const matchesCategory = appState.selectedCategories.includes(paper.category);
-        const textBlob = `${paper.title} ${paper.title_zh || ""} ${paper.tldr || ""} ${paper.summary || ""} ${paper.category} ${paper.publisher}`.toLowerCase();
+        const matchesType = appState.selectedTypes.includes(contentTypeOf(paper));
+        const textBlob = `${paper.title} ${paper.title_zh || ""} ${paper.tldr || ""} ${paper.summary || ""} ${paper.category} ${paper.publisher} ${contentTypeOf(paper)}`.toLowerCase();
         const matchesSearch = appState.searchQuery === "" || textBlob.includes(appState.searchQuery);
-        if (!matchesPublisher || !matchesCategory || !matchesSearch) return false;
+        if (!matchesPublisher || !matchesCategory || !matchesType || !matchesSearch) return false;
 
         if (!includeDecided) {
           const meta = getMeta(paperKey(paper));
@@ -355,6 +401,56 @@
         }
         return true;
       });
+    }
+
+    function flipDigit(digitEl, nextChar) {
+      const face = digitEl.querySelector(".flip-face");
+      if (!face) return;
+      const current = face.textContent;
+      if (current === String(nextChar)) return;
+
+      const next = document.createElement("span");
+      next.className = "flip-face flip-in";
+      next.textContent = nextChar;
+
+      face.classList.add("flip-out");
+      digitEl.appendChild(next);
+
+      // force reflow then animate in
+      void next.offsetWidth;
+      requestAnimationFrame(() => next.classList.add("flip-show"));
+
+      setTimeout(() => {
+        face.remove();
+        next.classList.remove("flip-in", "flip-show");
+      }, 320);
+    }
+
+    function setFlipCount(remaining, { animate = true } = {}) {
+      const n = Math.max(0, remaining | 0);
+      const tens = String(Math.floor(n / 10) % 10);
+      const ones = String(n % 10);
+      const tensEl = document.querySelector('.flip-digit[data-place="tens"]');
+      const onesEl = document.querySelector('.flip-digit[data-place="ones"]');
+      const label = document.getElementById("flip-label");
+
+      if (!animate || appState.displayedRemaining === null) {
+        tensEl.querySelector(".flip-face").textContent = tens;
+        onesEl.querySelector(".flip-face").textContent = ones;
+      } else if (n !== appState.displayedRemaining) {
+        // Flip down digit-by-digit when decreasing
+        flipDigit(tensEl, tens);
+        flipDigit(onesEl, ones);
+        if (n < appState.displayedRemaining) {
+          document.getElementById("flip-board").classList.add("flip-tick");
+          setTimeout(() => document.getElementById("flip-board").classList.remove("flip-tick"), 350);
+        }
+      }
+
+      if (label) {
+        label.textContent = n === 0 ? "all done" : "remaining";
+      }
+      appState.displayedRemaining = n;
     }
 
     function rebuildDeck() {
@@ -371,9 +467,15 @@
 
     function publisherClass(publisher) {
       const p = (publisher || "").toLowerCase();
-      if (p.includes("google")) return "google";
+      if (p.includes("google") || p.includes("deepmind")) return "google";
       if (p.includes("openai")) return "openai";
-      return "anthropic";
+      if (p.includes("anthropic")) return "anthropic";
+      if (p.includes("hugging")) return "hf";
+      if (p.includes("arxiv")) return "arxiv";
+      if (p.includes("microsoft")) return "ms";
+      if (p.includes("aws")) return "aws";
+      if (p.includes("bair") || p.includes("berkeley")) return "bair";
+      return "essay";
     }
 
     function escapeHtml(str) {
@@ -394,6 +496,10 @@
       const hasTldr = !!(paper.tldr && paper.tldr.trim());
       const hasTldrZh = !!(paper.tldr_zh && paper.tldr_zh.trim());
 
+      const ctype = contentTypeOf(paper);
+      const typeLabel = ctype === "blog" ? "Blog" : ctype === "essay" ? "Essay" : "Paper";
+      const readLabel = ctype === "paper" ? "Read Full Paper" : "Read Full Article";
+
       return `
         <article class="paper-card swipe-card" data-publisher="${escapeHtml(paper.publisher)}" data-key="${escapeHtml(key)}">
           <div class="swipe-stamp stamp-no">NOPE</div>
@@ -405,6 +511,7 @@
               <span>${escapeHtml(paper.publisher)}</span>
             </div>
             <div class="card-meta">
+              <span class="type-tag type-${escapeHtml(ctype)}">${typeLabel}</span>
               <span>${escapeHtml(paper.date || "")}</span>
               <span class="category-tag">${escapeHtml(paper.category || "")}</span>
             </div>
@@ -432,7 +539,7 @@
 
           <div class="card-footer">
             <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="read-btn">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Read Full Paper
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> ${readLabel}
             </a>
           </div>
         </article>
@@ -445,16 +552,17 @@
       const remaining = Math.max(0, appState.deck.length - appState.deckIndex);
       const totalFiltered = getFilteredPapers(true).length;
       const decided = totalFiltered - remaining;
+      setFlipCount(remaining, { animate: true });
       progressEl.textContent = remaining === 0
-        ? `Done · ${decided} reviewed`
-        : `${remaining} remaining · ${decided} reviewed`;
+        ? `${decided} reviewed · deck clear`
+        : `${decided} reviewed`;
 
       if (appState.deckIndex >= appState.deck.length) {
         deckEl.innerHTML = `
           <div class="empty-state swipe-empty">
             <div class="empty-icon">✨</div>
-            <h3>You're all caught up</h3>
-            <p>No more papers in this filter. Check your Collection, or pick another week.</p>
+            <h3>You're all caught up · 0 left</h3>
+            <p>No more items in this filter. Check your Collection, or pick another day.</p>
             <button class="read-btn" id="btn-goto-collection" style="margin-top:12px;">
               <i class="fa-solid fa-heart"></i> Open Collection
             </button>
@@ -639,6 +747,7 @@
                 <span>${escapeHtml(paper.publisher)}</span>
               </div>
               <div class="card-meta">
+                <span class="type-tag type-${escapeHtml(contentTypeOf(paper))}">${contentTypeOf(paper)}</span>
                 <span>${escapeHtml(paper.date || "")}</span>
                 <span class="category-tag">${escapeHtml(paper.category || "")}</span>
                 <button class="icon-btn btn-unsave" data-key="${escapeHtml(key)}" title="Remove from collection">
@@ -666,7 +775,7 @@
             </div>
             <div class="card-footer">
               <a href="${escapeHtml(paper.url)}" target="_blank" rel="noopener" class="read-btn">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Read Full Paper
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
               </a>
             </div>
           </article>
@@ -686,17 +795,27 @@
     }
 
     function updateStats(activeWeek) {
-      let gdmCount = 0;
-      let anthropicCount = 0;
+      const counts = {};
       activeWeek.papers.forEach(p => {
-        if (p.publisher.toLowerCase().includes("google")) gdmCount++;
-        if (p.publisher.toLowerCase().includes("anthropic")) anthropicCount++;
+        counts[p.publisher] = (counts[p.publisher] || 0) + 1;
       });
-      const total = gdmCount + anthropicCount || 1;
-      document.getElementById("stats-count-google").innerText = gdmCount;
-      document.getElementById("stats-count-anthropic").innerText = anthropicCount;
-      document.getElementById("stats-bar-google").style.width = `${(gdmCount / total) * 100}%`;
-      document.getElementById("stats-bar-anthropic").style.width = `${(anthropicCount / total) * 100}%`;
+      const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const total = entries.reduce((s, [, n]) => s + n, 0) || 1;
+      const colors = [
+        "var(--accent-blue)", "var(--accent-orange)", "var(--accent-green)",
+        "var(--accent-purple)", "var(--accent-gold)", "var(--accent-pink)", "var(--accent-red)"
+      ];
+      const rows = document.getElementById("stats-rows");
+      const bar = document.getElementById("stats-bar-outer");
+      rows.innerHTML = entries.slice(0, 6).map(([name, n]) => `
+        <div class="stats-widget-row">
+          <span style="font-size:11px;">${escapeHtml(name)}</span>
+          <strong>${n}</strong>
+        </div>
+      `).join("") || `<div class="stats-widget-row"><span style="font-size:11px;">No items</span><strong>0</strong></div>`;
+      bar.innerHTML = entries.map(([, n], i) =>
+        `<div class="stats-widget-bar-inner" style="background-color:${colors[i % colors.length]};width:${(n / total) * 100}%;"></div>`
+      ).join("");
     }
 
     // Theme
@@ -768,6 +887,18 @@
       if (e.key === "Enter") handleChat();
     });
 
+    function setupPublicLink() {
+      const a = document.getElementById("public-site-link");
+      // Prefer live origin when already on GitHub Pages; otherwise show the public URL target.
+      const pagesUrl = "https://ianawyy.github.io/IanaWYY/";
+      if (location.hostname.endsWith("github.io")) {
+        a.href = location.origin + location.pathname.replace(/index\.html$/, "");
+        a.title = "You are on the public site — share this URL";
+      } else {
+        a.href = pagesUrl;
+      }
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       loadPersisted();
       if (appState.isLightMode) {
@@ -775,6 +906,8 @@
         themeBtn.querySelector("i").className = "fa-solid fa-sun";
         themeBtn.querySelector("span").innerText = "Light Mode";
       }
+      if (!appState.activeWeekId) appState.activeWeekId = defaultWeekId();
+      setupPublicLink();
       renderWeekList();
       setupFilters();
       setupViewTabs();

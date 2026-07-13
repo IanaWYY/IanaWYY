@@ -324,8 +324,10 @@ body::before {
   padding: 16px 20px;
   border-top: 1px solid var(--border-color);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .theme-toggle-btn {
@@ -452,6 +454,180 @@ body::before {
   font-weight: 600;
   color: var(--text-secondary);
   letter-spacing: 0.4px;
+}
+
+/* Flip-clock remaining counter */
+.flip-counter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  user-select: none;
+}
+
+.flip-board {
+  display: flex;
+  gap: 6px;
+  perspective: 600px;
+  transition: transform 0.2s ease;
+}
+
+.flip-board.flip-tick {
+  transform: scale(1.06);
+}
+
+.flip-digit {
+  position: relative;
+  width: 42px;
+  height: 56px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 48%, rgba(0,0,0,0.25) 52%, rgba(0,0,0,0.35) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+
+.flip-digit::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  transform-origin: center bottom;
+  backface-visibility: hidden;
+}
+
+.flip-face.flip-out {
+  animation: flipOut 0.3s ease forwards;
+  z-index: 1;
+}
+
+.flip-face.flip-in {
+  transform: rotateX(90deg);
+  opacity: 0;
+  z-index: 2;
+}
+
+.flip-face.flip-in.flip-show {
+  animation: flipIn 0.3s ease forwards;
+}
+
+@keyframes flipOut {
+  0% { transform: rotateX(0deg); opacity: 1; }
+  100% { transform: rotateX(-90deg); opacity: 0.3; }
+}
+
+@keyframes flipIn {
+  0% { transform: rotateX(90deg); opacity: 0.3; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+
+.flip-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.flip-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-primary);
+}
+
+.flip-sub {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.light-mode .flip-digit {
+  background: linear-gradient(180deg, #fff 0%, #f1f5f9 48%, #e2e8f0 52%, #cbd5e1 100%);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+}
+
+.type-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.type-tag.type-paper {
+  color: var(--accent-blue);
+  border-color: rgba(74, 118, 168, 0.35);
+  background: rgba(74, 118, 168, 0.1);
+}
+
+.type-tag.type-blog {
+  color: var(--accent-green);
+  border-color: rgba(92, 143, 118, 0.35);
+  background: rgba(92, 143, 118, 0.1);
+}
+
+.type-tag.type-essay {
+  color: var(--accent-purple);
+  border-color: rgba(143, 116, 168, 0.35);
+  background: rgba(143, 116, 168, 0.1);
+}
+
+.avatar-hf { background: linear-gradient(135deg, #ff9d00, #ffcd3c); }
+.avatar-arxiv { background: linear-gradient(135deg, #b31b1b, #e07a5f); }
+.avatar-ms { background: linear-gradient(135deg, #00a4ef, #7fba00); }
+.avatar-aws { background: linear-gradient(135deg, #ff9900, #232f3e); }
+.avatar-bair { background: linear-gradient(135deg, #003262, #fdb515); }
+.avatar-essay { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); }
+
+.dot-arxiv { background-color: #b31b1b; }
+.dot-hf { background-color: #ff9d00; }
+.dot-essay { background-color: var(--accent-purple); }
+.dot-bair { background-color: #fdb515; }
+.dot-aws { background-color: #ff9900; }
+.dot-ms { background-color: #00a4ef; }
+
+.public-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-blue);
+  text-decoration: none;
+  margin-top: 6px;
+}
+
+.public-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .flip-digit {
+    width: 36px;
+    height: 48px;
+  }
+  .flip-face {
+    font-size: 24px;
+  }
 }
 
 .swipe-deck {
