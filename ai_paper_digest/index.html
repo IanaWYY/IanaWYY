@@ -613,6 +613,14 @@
       persist();
       updateCollectionCount();
 
+      // Flip remaining count down immediately (… → 0)
+      const remainingAfter = Math.max(0, appState.deck.length - appState.deckIndex - 1);
+      const totalFiltered = getFilteredPapers(true).length;
+      const decidedAfter = totalFiltered - remainingAfter;
+      setFlipCount(remainingAfter, { animate: true });
+      document.getElementById("swipe-progress").textContent =
+        remainingAfter === 0 ? `${decidedAfter} reviewed · deck clear` : `${decidedAfter} reviewed`;
+
       if (card) {
         card.classList.add(action === "save" ? "fly-right" : "fly-left");
         setTimeout(() => {
